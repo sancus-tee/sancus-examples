@@ -1,0 +1,16 @@
+
+SANCUSCC     = sancus-cc
+SANCUSLD     = sancus-ld
+SANCUSSIM    = sancus-sim
+SANCUSCRYPTO = sancus-crypto
+SANCUSLOAD   = sancus-loader
+
+
+CC           = ${SANCUSCC}
+LD           = ${SANCUSLD}
+
+
+FPGATTY      = /dev/ttyUSB0
+FPGARATE     = 115200
+
+
