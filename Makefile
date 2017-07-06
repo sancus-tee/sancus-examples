@@ -1,11 +1,17 @@
 
-EXAMPLES = sensor-reader hello-world
+SUPPORT  = sancus-contiki
+EXAMPLES = ta-demo hello-world sensor-reader
 
 
-all: ${EXAMPLES}
+all: ${SUPPORT} ${EXAMPLES}
 
 
-.PHONY: ${EXAMPLES}
+.PHONY: ${SUPPORT} ${EXAMPLES}
+
+sancus-contiki:
+	git submodule init
+	git submodule update
+	${MAKE} -C $@ update
 
 sensor-reader:
 	${MAKE} -C $@ ${MODE}
@@ -13,6 +19,8 @@ sensor-reader:
 hello-world:
 	${MAKE} -C $@ ${MODE}
 
+ta-demo: sancus-contiki
+	${MAKE} -C $@ ${MODE}
 
 
 clean:

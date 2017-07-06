@@ -1,0 +1,3 @@
+[submodule "sancus-contiki"]
+	path = sancus-contiki
+	url = git@github.com:sancus-pma/sancus-contiki.git
