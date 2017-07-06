@@ -12,7 +12,7 @@ PROTECT_IVTBL         = 1
 
 
 
-ifneq ($(TARGET),openmsp430)
+ifneq ($(TARGET),sancus-fpga)
   $(error This example is designed for the OpenMSP430 with Sancus extensions only. Other targets are not supported)
 endif
 
@@ -57,7 +57,14 @@ endif
 LIBS            += $(LIBS_DIR)/libsm-control.a $(LIBS_DIR)/libloader.a \
 		   $(LIBS_DIR)/libmalloc.a
 
-CONTIKI = ../..
+# Should point to Contiki's <GIT_ROOT>/contiki
+CONTIKI = ../../contiki
+# Should point to <GIT_ROOT>/targets
+TARGETDIRS += ../../targets
+# Should point to <GIT_ROOT>/apps
+APPDIRS += ../../apps
+
+
 
 ifeq ($(WITH_SLIP),1)
   CONTIKI_NO_NET = 0

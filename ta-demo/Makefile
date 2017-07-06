@@ -1,59 +1,77 @@
 
-all: install-pkg sim.ta_demo.openmsp430
+include ../Makefile.include
 
 
-HTTPPATH = https://people.cs.kuleuven.be/~job.noorman
-
-download-pkg:
-	wget ${HTTPPATH}/sancus-support.deb
-	wget ${HTTPPATH}/sancus-core.deb
-	wget ${HTTPPATH}/sancus-compiler.deb
-	wget ${HTTPPATH}/llvm-sancus.deb
-	touch download-pkg
-
-install-pkg: download-pkg
-	sudo dpkg -i sancus-support.deb sancus-core.deb \
-          sancus-compiler.deb llvm-sancus.deb; true \
-	sudo apt-get install -f	
-	sudo pip3 install pyelftools
-	touch install-pkg
+CONTIKIDIR = ../sancus-contiki/
+TAMOD      = examples/ta_mod
 
 
-clean: ta_demo.clean
-	rm -f *.deb
-	rm -f sancus_sim.fst sim-input.bin sim-output.bin
+all: build
 
-distclean: clean
-	rm -f download-pkg install-pkg
+build: sim.ta_demo.openmsp430
 
+sim:
 
-SET_ENV      = 
-#SET_ENV      = $(shell cat ../sancus-setenv)
-SANCUSMAKE   = ${SET_ENV} ${MAKE} SANCUS=1
+load:
 
-SANCUS_DIR       = /usr/
-MSP_SUPPORT_DIR  = $(SANCUS_DIR)/share/sancus-support
-TOOLS_DIR        = $(MSP_SUPPORT_DIR)/tools
-INCLUDES_DIR     = $(MSP_SUPPORT_DIR)/include
-LIBS_DIR         = $(MSP_SUPPORT_DIR)/lib
+clean:
+
+distclean:
 
 
-ifeq ($(SANCUS), 1)
-CC           = sancus-cc
-LD           = sancus-ld
-endif
 
-GEN_SYMTAB   = $(TOOLS_DIR)/generate-symtab.py
-SIM          = sancus-sim
-CRYPTO       = sancus-crypto
-LOAD         = sancus-loader
+.PHONY: copy-src
+copy-src_ta_mod:
+	cp -r ta_mod ${CONTIKIDIR}/examples/
 
-DEFAULT_ROM  = 48K
-DEFAULT_RAM  = 10K
-DEV          = /dev/ttyUSB0
-BAUD         = 115200
+ta_demo.openmsp430: copy-src_ta_mod
+	${MAKE} -C ${CONTIKIDIR}/${TAMOD} \
+          TARGET=sancus-fpga SANCUS_DIR="$$SANCUS_DIR"
+	cp ${CONTIKIDIR}/${TAMOD}/ta_demo.openmsp430 ./
+	msp430-size --format=SysV -t -d ta_demo.openmsp430
 
+ta_demo.openmsp430.elf: ta_demo.openmsp430 vendor-key.txt
+	${SANCUSCRYPTO} --key $(shell cat ./vendor-key.txt) \
+          --fill-macs ta_demo.openmsp430 -o ta_demo.openmsp430.elf
 
-include Makefile.ta_mod
+.PHONY: sim.ta_demo.openmsp430
+sim.ta_demo.openmsp430:
+	${MAKE} clean
+	${MAKE} ta_demo.openmsp430.elf BUILD=sim
+	touch sim.ta_demo.openmsp430
+	$(SANCUSSIM) --rom 41K --ram 16K ta_demo.openmsp430.elf; \
+          true
+	rm -f sim.ta_demo.openmsp430
+
+.PHONY: load.ta_demo.openmsp430
+load.ta_demo.openmsp430:
+	${MAKE} clean
+	${MAKE} ta_demo.openmsp430.elf BUILD=load
+	${SANCUSLOAD} -device $(FPGATTY) -baudrate $(FPGARATE) \
+          --rom 41K --ram 16K ta_demo.openmsp430.elf
+	screen -L $(FPGATTY) $(FPGARATE)
+
+ta_mod.keys: vendor-key.txt
+	@echo "+++ ta_mod"
+	${SANCUSCRYPTO} --key $(shell cat ./vendor-key.txt) \
+          --gen-sm-key TACore \
+          ta_demo.openmsp430.elf
+	@echo "Now copy and paste this to 'ta_demo-key.txt'!"
+
+# sancus-crypto --key a39ebb7f80ce2b03 --unwrap cipher tag
+# vendor-key.txt:
+# sancus-crypto --key deadbeefcafebabe --gen-vendor-key 1234
+
+ta_demo.clean:
+	rm -f ta_demo.openmsp430 ta_demo.openmsp430.elf
+	if [ -d ${CONTIKIDIR}/${TAMOD} ]; then \
+	  ${MAKE} -C ${CONTIKIDIR}/${TAMOD} clean \
+            TARGET=sancus-fpga BUILD=load SANCUS_DIR=${SANCUS_DIR}; \
+	fi
+	rm -rf ${CONTIKIDIR}/${TAMOD}
+	rm -f sim.ta_demo.openmsp430
+	rm -f ta_demo/util/*.o
+
+ta_demo.distclean: ta_demo.clean
 
 
