@@ -1,4 +1,6 @@
 
+include Makefile.include
+
 
 
 WITH_ANTELOPE         = 0
@@ -123,6 +125,14 @@ include $(CONTIKI)/Makefile.include
 
 setup:
 	mkdir -p $(OBJECTDIR)/apps
+
+# Essentially, compillation units that are to be compiled with sancus-cc
+# should be named ta_* -- sancus-cc doesn't work for compiling all of
+# Contiki.
+$(OBJECTDIR)/ta_%.o: ta_%.c | $(OBJECTDIR)
+	echo ******************* ${SANCUSCC} 
+	${SANCUSCC} --debug $(CFLAGS) -MMD -c $< -o $@
+
 
 # --- modules and similar targets --------------------------------------------
 
