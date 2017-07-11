@@ -42,7 +42,11 @@ AUTOSTART_PROCESSES(
   );
 
 
+
+/*---------------------------------------------------------------------------*/
+#include <helpers.h>
 #include <string.h>
+
 
 int putchar(int c)
 {
