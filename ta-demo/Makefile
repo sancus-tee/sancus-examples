@@ -70,7 +70,7 @@ ta_demo.clean:
             TARGET=sancus-fpga BUILD=load SANCUS_DIR=${SANCUS_DIR}; \
 	fi
 	rm -rf ${CONTIKIDIR}/${TAMOD}
-	rm -f sim.ta_demo.openmsp430
+	rm -f sim.ta_demo.openmsp430 load.ta_demo.openmsp430
 	rm -f ta_demo/util/*.o
 
 ta_demo.distclean: ta_demo.clean
