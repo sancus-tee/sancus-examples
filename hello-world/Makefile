@@ -1,34 +1,32 @@
-
 include ../Makefile.include
 
+SOURCES         = $(shell ls *.c)
+OBJECTS         = $(SOURCES:.c=.o)
 
-OBJECTS=main.o hello.o
-TARGET=main.elf
-TARGET_NO_MACS=$(TARGET).no-macs
-ROM=48K
-RAM=10K
-
-CFLAGS=
-LIBS=
+TARGET          = main.elf
+TARGET_NO_MAC   = no_mac_$(TARGET)
 
 all: $(TARGET)
 
-build: all
+$(TARGET_NO_MAC): $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $@ $^
 
-$(TARGET_NO_MACS): $(OBJECTS) $(LIBS)
-	$(LD) --standalone --rom $(ROM) --ram $(RAM) -o $@ $^
-
-$(TARGET): $(TARGET_NO_MACS)
-	cp $< $@
-
-sim: $(TARGET)
-	$(SANCUSSIM) --rom $(ROM) --ram $(RAM) $<
+$(TARGET): $(TARGET_NO_MAC)
+	$(SANCUS_CRYPTO) $(CRYPTOFLAGS) -o $@ $<
 
 load: $(TARGET)
-	$(SANCUSLOAD) -device ${FPGATTY} -baudrate ${FPGARATE} $<
+	$(SANCUS_LOAD) $(LOADFLAGS) $<
+
+sim: $(TARGET)
+	$(SANCUS_SIM) $(SIMFLAGS) $<
+
+ifeq ($(SIM),1)
+run: sim
+else
+run: load
+endif
 
 clean:
-	rm -f $(OBJECTS) $(TARGET_NO_MACS) $(TARGET)
+	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd
-

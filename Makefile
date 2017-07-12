@@ -1,9 +1,6 @@
-
 EXAMPLES = sensor-reader hello-world
 
-
 all: ${EXAMPLES}
-
 
 .PHONY: ${EXAMPLES}
 
@@ -13,13 +10,9 @@ sensor-reader:
 hello-world:
 	${MAKE} -C $@ ${MODE}
 
-
-
 clean:
 	for dir in ${EXAMPLES}; do \
           ${MAKE} -C "$$dir" clean; \
         done
 
 distclean: clean
-
-

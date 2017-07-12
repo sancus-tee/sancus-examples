@@ -1,16 +1,29 @@
+SANCUS_SUPPORT_DIR  = "/usr/local/share/sancus-support"
 
-SANCUSCC     = sancus-cc
-SANCUSLD     = sancus-ld
-SANCUSSIM    = sancus-sim
-SANCUSCRYPTO = sancus-crypto
-SANCUSLOAD   = sancus-loader
+CC                  = sancus-cc
+LD                  = sancus-ld
+SANCUS_CRYPTO       = sancus-crypto
+SANCUS_SIM          = sancus-sim
+SANCUS_LOAD         = sancus-loader
+RM                  = rm -f
 
+SANCUS_KEY          = deadbeefcafebabe
+VENDOR_ID           = 1234
+RAM_SIZE            = 24K
+ROM_SIZE            = 32K
+MEMSIZE_FLAGS       = --ram 24K --rom 32K
+FPGA_DEV            = /dev/ttyUSB0
+FPGA_RATE           = 115200
 
-CC           = ${SANCUSCC}
-LD           = ${SANCUSLD}
+VENDOR_KEY          = `$(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-key $(VENDOR_ID) | xxd -p`
+MEMFLAGS            = --ram $(RAM_SIZE) --rom $(ROM_SIZE) 
 
+CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors 
+LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -ldev-uart --standalone --verbose
+SIMFLAGS            = $(MEMFLAGS)
+CRYPTOFLAGS         = --fill-macs --key $(VENDOR_KEY)
+LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)
 
-FPGATTY      = /dev/ttyUSB0
-FPGARATE     = 115200
-
-
+ifeq ($(SIM),1)
+    CFLAGS += -D__SANCUS_SIM
+endif
