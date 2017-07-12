@@ -127,7 +127,7 @@ include $(CONTIKI)/Makefile.include
 setup:
 	mkdir -p $(OBJECTDIR)/apps
 
-# Essentially, compillation units that are to be compiled with sancus-cc
+# Essentially, compilation units that are to be compiled with sancus-cc
 # should be named ta_* -- sancus-cc doesn't work for compiling all of
 # Contiki.
 $(OBJECTDIR)/ta_%.o: ta_%.c | $(OBJECTDIR)
