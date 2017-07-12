@@ -50,8 +50,8 @@
 #include "contiki.h"
 #include "sys/mt.h"
 
-#include "../config.h"
-#include "../ta_mod_external.h"
+#include "config.h"
+#include "ta_mod_external.h"
 #include "multi-threading.h"
 
 PROCESS(multi_threading_process, "Multi-threading process");

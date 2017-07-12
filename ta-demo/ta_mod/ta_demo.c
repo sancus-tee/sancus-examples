@@ -14,16 +14,16 @@
 /* Some processes and threads to keep the system busy:                       */
 
 #ifdef WITH_EXAMPLE_NET
-#include "apps/networking.h"
+#include "psock_server.h"
 #endif
 
 #ifdef WITH_ANTELOPE
-#include "apps/shell-db.h"
+#include "shell-db.h"
 #endif
 
-#include "apps/hello-world.h"
-#include "apps/attacker.h"
-#include "apps/multi-threading.h"
+#include "hello-world.h"
+#include "attacker.h"
+#include "multi-threading.h"
 
 
 /*---------------------------------------------------------------------------*/

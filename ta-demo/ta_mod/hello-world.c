@@ -3,7 +3,7 @@
 #include "contiki.h"
 #include "sys/mt.h"
 
-#include "../config.h"
+#include "config.h"
 #include "hello-world.h"
 
 #ifdef __DEBUG

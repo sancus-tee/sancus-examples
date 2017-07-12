@@ -4,8 +4,8 @@
 #include "contiki.h"
 #include "sys/mt.h"
 
-#include "../helpers.h"
-#include "../config.h"
+#include "helpers.h"
+#include "config.h"
 #include "attacker.h"
 
 #include <string.h>

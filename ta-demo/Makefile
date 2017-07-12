@@ -23,7 +23,6 @@ distclean:
 .PHONY: copy-src
 copy-src_ta_mod:
 	cp -r ta_mod ${CONTIKIDIR}/examples/
-	cp ../Makefile.include ${CONTIKIDIR}/examples/ta_mod
 
 ta_demo.openmsp430: copy-src_ta_mod
 	${MAKE} -C ${CONTIKIDIR}/${TAMOD} \

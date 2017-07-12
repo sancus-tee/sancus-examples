@@ -5,7 +5,7 @@
 #include "contiki.h"
 #include "contiki-net.h"
 
-#include "../config.h"
+#include "config.h"
 #include "networking.h"
 
 

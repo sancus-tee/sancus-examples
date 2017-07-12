@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include <sancus_support/tsc.h>
+#include "helpers.h"
 #include "ta_internals.h"
 
 

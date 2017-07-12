@@ -26,7 +26,9 @@ contiki-sm-server: sancus-contiki
 	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/sm-server
 
 ta-demo: sancus-contiki
-	${MAKE} -C $@ ${MODE}
+	${MAKE} -C $@
+#	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta_mod clean
+#	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta_mod
 
 clean: sancus-contiki-clean
 	for dir in ${EXAMPLES}; do \

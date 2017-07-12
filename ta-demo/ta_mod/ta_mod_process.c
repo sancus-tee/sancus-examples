@@ -8,6 +8,7 @@
 #include "contiki-net.h"
 #include "sys/mt.h"
 
+#include "helpers.h"
 #include "config.h"
 #include "ta_mod.h"
 #include "ta_internals.h"

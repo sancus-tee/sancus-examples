@@ -4,6 +4,8 @@
 #include <string.h>
 
 
+void uart2_write_byte(uint8_t c);
+
 int putchar(int c);
 
 int puts_n(char *s);
