@@ -8,9 +8,13 @@ Elementary example programs to test your Sancus distribution.
   dumps "hello world" on (untrusted) stdout.
 - **sensor-reader:** example program from the paper, demonstrating secure
   linking between dummy sensor/reader SMs.
-- **sancus-contiki**: Supporting files for some of the demos: port of the
+- **sancus-contiki:** Supporting files for some of the demos: port of the
   Contiki OS with support for Sancus modules
-- **ta-demo**: "Lightweight and flexible trust assessment modules
+    - **examples/hello-world:** minimal example of a Sancus protected
+      module that can be invoked from a Contiki task
+    - **examples/sm-server:** Sancus module loader and minimalist
+      infrastructure for reactive programming with Sancus modules
+- _[broken]_ **ta-demo:** "Lightweight and flexible trust assessment modules
   for the Internet of Things", ESORICS 2015;
   https://lirias.kuleuven.be/bitstream/123456789/516201/1/esorics15.pdf
 
