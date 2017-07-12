@@ -1,10 +1,7 @@
-
 SUPPORT  = sancus-contiki
 EXAMPLES = ta-demo hello-world sensor-reader
 
-
 all: ${SUPPORT} ${EXAMPLES}
-
 
 .PHONY: ${SUPPORT} ${EXAMPLES}
 
@@ -29,5 +26,3 @@ clean:
         done
 
 distclean: clean
-
-

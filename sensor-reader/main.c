@@ -3,9 +3,9 @@
 #include <sancus/sm_support.h>
 #include "reader.h"
 
-// NOTE: this struct is put in the data section instead of on the stack due to
-// a bug in the LLVM MSP430 backend
-ReaderOutput out;
+#ifndef __SANCUS_SIM
+    #include <sancus_support/uart.h>
+#endif
 
 void print_bytes(const char* bytes, size_t n)
 {
@@ -18,29 +18,35 @@ int main()
 {
     WDTCTL = WDTPW | WDTHOLD;
 
-    puts("main() started");
-
-    sancus_enable(&reader);
     sancus_enable(&sensor);
+    sancus_enable(&reader);
 
-    puts("Reading sensor");
-    get_readings(&out);
+    nonce no = 0xabcd;
+    ReaderOutput out;
+    get_readings(no, &out);
 
     printf("Nonce: ");
-    print_bytes((char*)&out.nonce, sizeof(out.nonce));
-    printf("\nCipher: ");
+    print_bytes((char*)&no, sizeof(no));
+    printf(", Cipher: ");
     print_bytes((char*)&out.cipher, sizeof(out.cipher));
-    printf("\nTag: ");
+    printf(", Tag: ");
     print_bytes(out.tag, sizeof(out.tag));
+    printf("\n");
 
-    puts("\nmain() done");
     return 0;
 }
 
 int putchar(int c)
 {
-    P1OUT = c;
-    P1OUT |= 0x80;
+    #if __SANCUS_SIM
+        P1OUT = c;
+        P1OUT |= 0x80;
+    #else
+        if (c == '\n')
+            putchar('\r');
+
+        uart_write_byte(c);
+    #endif
+
     return c;
 }
-
