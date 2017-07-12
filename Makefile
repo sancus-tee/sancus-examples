@@ -1,5 +1,7 @@
 SUPPORT  = sancus-contiki
-EXAMPLES = ta-demo hello-world sensor-reader
+EXAMPLES = hello-world sensor-reader
+EXAMPLES_CONTIKI \
+         = contiki-hello-world contiki-sm-server ta-demo
 
 all: ${SUPPORT} ${EXAMPLES}
 

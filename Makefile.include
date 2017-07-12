@@ -1,4 +1,6 @@
-SANCUS_SUPPORT_DIR  = "/usr/local/share/sancus-support"
+ifndef SANCUS_SUPPORT_DIR
+  SANCUS_SUPPORT_DIR  = "/usr/local/share/sancus-support"
+endif
 
 CC                  = sancus-cc
 LD                  = sancus-ld
