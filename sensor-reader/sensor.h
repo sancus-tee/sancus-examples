@@ -10,4 +10,3 @@ typedef unsigned sensor_data;
 sensor_data SM_ENTRY(sensor) read_sensor_data(void);
 
 #endif
-

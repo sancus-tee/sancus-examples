@@ -9,14 +9,14 @@ static sensor_data SM_FUNC(reader) transform_readings(sensor_data data)
     return data ^ 0xcafe;
 }
 
-void get_readings(ReaderOutput* out)
+void SM_ENTRY(reader) get_readings(nonce no, ReaderOutput* out)
 {
-    sensor_data data = transform_readings(read_sensor_data());
-    out->nonce = 0xbabe;
-    int res = sancus_wrap(&out->nonce, sizeof(out->nonce),
-                          &data, sizeof(data),
-                          &out->cipher, out->tag);
+    sensor_data data = read_sensor_data();
+    sensor_data transformed = transform_readings(data);
 
-    if (!res)
-        puts("Wrapping failed");
+    if (!sancus_wrap(&no, sizeof(no), &transformed, sizeof(transformed),
+                     out->cipher, out->tag))
+    {
+        puts("Error encrypting data");
+    }
 }
