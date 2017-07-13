@@ -10,13 +10,14 @@
 #define pr_info3(str, a1, a2, a3)   printf3(INFO_STR(str), a1, a2, a3)
 
 #define EXIT()                      asm("bis #0x210, r2")
-#define ASSERT(cond)                            \
-  do {                                          \
-    if (!(cond))                                \
-    {                                           \
-        pr_info("assertion failed: " #cond);    \
-        EXIT();                                 \
-    }                                           \
+#define ASSERT(cond)                                \
+  do {                                              \
+    if (!(cond))                                    \
+    {                                               \
+        /* pr_info1 to work around an LLVM bug */   \
+        pr_info1("assertion failed: " #cond, 0);    \
+        EXIT();                                     \
+    }                                               \
   } while(0)
 
 void msp430_init(void);
