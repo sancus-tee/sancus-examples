@@ -15,8 +15,7 @@ Elementary example programs to test your Sancus distribution.
     - **examples/sm-server:** Sancus module loader and minimalist
       infrastructure for reactive programming with Sancus modules
 - _[broken]_ **ta-demo:** "Lightweight and flexible trust assessment modules
-  for the Internet of Things", ESORICS 2015;
-  https://lirias.kuleuven.be/bitstream/123456789/516201/1/esorics15.pdf
+  for the Internet of Things", [ESORICS 2015](https://distrinet.cs.kuleuven.be/software/sancus/publications/esorics15.pdf).
 
 ## Running the Examples
 
