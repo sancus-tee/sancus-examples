@@ -1,4 +1,5 @@
 #include "reader.h"
+#include "../common.h"
 
 #include <stdio.h>
 
@@ -14,9 +15,6 @@ void SM_ENTRY(reader) get_readings(nonce no, ReaderOutput* out)
     sensor_data data = read_sensor_data();
     sensor_data transformed = transform_readings(data);
 
-    if (!sancus_wrap(&no, sizeof(no), &transformed, sizeof(transformed),
-                     out->cipher, out->tag))
-    {
-        puts("Error encrypting data");
-    }
+    ASSERT(sancus_wrap(&no, sizeof(no), &transformed, sizeof(transformed),
+                       out->cipher, out->tag));
 }

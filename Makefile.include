@@ -13,13 +13,12 @@ RM                  = rm -f
 
 SANCUS_KEY          = deadbeefcafebabe
 VENDOR_ID           = 1234
-RAM_SIZE            = 24K
-ROM_SIZE            = 32K
-MEMSIZE_FLAGS       = --ram 24K --rom 32K
+RAM_SIZE            = 16K
+ROM_SIZE            = 41K
 FPGA_DEV            = /dev/ttyUSB0
 FPGA_RATE           = 115200
 
-VENDOR_KEY          = `$(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-key $(VENDOR_ID) | xxd -p`
+VENDOR_KEY          = $(shell $(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-key $(VENDOR_ID) | xxd -p)
 MEMFLAGS            = --ram $(RAM_SIZE) --rom $(ROM_SIZE) 
 
 CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors 
@@ -30,4 +29,8 @@ LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)
 
 ifeq ($(SIM),1)
     CFLAGS += -D__SANCUS_SIM
+endif
+
+ifeq ($(QUIET),1)
+    CFLAGS += -DQUIET
 endif

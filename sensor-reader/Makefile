@@ -1,6 +1,6 @@
 include ../Makefile.include
 
-SOURCES         = $(shell ls *.c)
+SOURCES         = $(shell ls *.c) ../common.c
 OBJECTS         = $(SOURCES:.c=.o)
 
 TARGET          = main.elf
