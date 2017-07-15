@@ -9,12 +9,12 @@ extern struct SancusModule reader;
 
 typedef struct
 {
-    char cipher[sizeof(sensor_data)];
+    char cipher[sizeof(sensor_data_t)];
     char tag[SANCUS_TAG_SIZE];
 } ReaderOutput;
 
-typedef unsigned nonce;
+typedef unsigned nonce_t;
 
-void SM_ENTRY(reader) get_readings(nonce no, ReaderOutput* out);
+void SM_ENTRY(reader) get_readings(nonce_t no, ReaderOutput* out);
 
 #endif

@@ -13,13 +13,14 @@ int main()
     do_sancus_enable(&reader);
 
     pr_info("requesting sensor readings..");
-    nonce no = 0xabcd;
+    nonce_t no = 0xabcd;
     ReaderOutput out;
     get_readings(no, &out);
 
-    dump_buf((char*)&no, sizeof(no), "Nonce");
-    dump_buf((char*)&out.cipher, sizeof(out.cipher), "Cipher");
-    dump_buf((char*)&out.tag, sizeof(out.tag), "Tag");
+    pr_info("dumping sealed output from reader SM..");
+    dump_buf((char*)&no, sizeof(no), "  Nonce");
+    dump_buf((char*)&out.cipher, sizeof(out.cipher), "  Cipher");
+    dump_buf((char*)&out.tag, sizeof(out.tag), "  Tag");
 
     pr_info("all done!");
     return 0;
