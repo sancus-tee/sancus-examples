@@ -6,10 +6,6 @@ OBJECTS         = $(SOURCES:.c=.o)
 TARGET          = main.elf
 TARGET_NO_MAC   = no_mac_$(TARGET)
 
-# data below as printed when executing the program
-NONCE           = cdab
-CIPHER          = 3a36
-TAG             = cd027bfe3a117f17
 READER_SM_KEY   = `$(SANCUS_CRYPTO) --gen-sm-key reader --key $(VENDOR_KEY) main.elf | xxd -p`
 
 all: $(TARGET)
@@ -23,11 +19,11 @@ $(TARGET): $(TARGET_NO_MAC)
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
+# redirect output to file and stdout (apt-get install expect)
+# https://stackoverflow.com/a/7219252
 sim: $(TARGET)
-	$(SANCUS_SIM) $(SIMFLAGS) $<
-
-verify: $(TARGET)
-	sancus-crypto --unwrap $(NONCE) $(CIPHER) $(TAG) --key $(READER_SM_KEY)
+	unbuffer $(SANCUS_SIM) $(SIMFLAGS) $< | tee sim.out
+	./unwrap.py $(READER_SM_KEY) sim.out
 
 ifeq ($(SIM),1)
 run: sim
@@ -37,5 +33,5 @@ endif
 
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
-	rm -f sim-input.bin sim-output.bin
+	rm -f sim-input.bin sim-output.bin sim.out
 	rm -f *.fst *.vcd

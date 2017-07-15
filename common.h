@@ -43,7 +43,7 @@ int __attribute__((noinline)) putchar(int c);
         int i;
         printf2("%s (%d bits) is: ", (int) name, size*8);
         for (i = 0; i < size; i++)
-            printf1("%02x ", (int) buf[i] & 0xff);
+            printf1("%02x", (int) buf[i] & 0xff);
         puts(" ");
     }
 #else

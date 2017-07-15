@@ -3,7 +3,7 @@
 This example program illustrates how to build and run a Sancus application. We
 follow the example given in the paper: one protected module providing readings
 from a memory-mapped I/O sensor, plus one that transforms this data and
-encrypts and signs it to be sent to the vendor.
+wraps (encrypts + signs) it to be sent to the vendor.
 
 The remote stakeholder is provided with an *authenticity* guarantee: a good
 signature over sensor readings associated with a fresh nonce can only be
@@ -18,5 +18,5 @@ build the program, simulate the resulting binary, and verify its output, simply
 run:
 
 ```bash
-$ make SIM=1 clean sim verify
+$ make SIM=1 clean sim
 ```
