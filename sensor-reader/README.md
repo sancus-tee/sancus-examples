@@ -1,8 +1,14 @@
 # Sensor-reader SMs: An end-to-end example
 
 This example program illustrates how to build and run a Sancus application. We
-follow the example given in the paper: one protected module providing sensor
-data and one that transforms this data and signs it to be sent to the vendor. 
+follow the example given in the paper: one protected module providing readings
+from a memory-mapped I/O sensor, plus one that transforms this data and
+encrypts and signs it to be sent to the vendor.
+
+The remote stakeholder is provided with an *authenticity* guarantee: a good
+signature over sensor readings associated with a fresh nonce can only be
+produced by untampered sensor/reader SMs. Moreover, the *confidentiality* of
+the transformed sensor readings is preserved.
 
 ## Building and Running
 
