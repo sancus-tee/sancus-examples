@@ -9,7 +9,13 @@
 #define pr_info2(str, a1, a2)       printf2(INFO_STR(str), a1, a2)
 #define pr_info3(str, a1, a2, a3)   printf3(INFO_STR(str), a1, a2, a3)
 
-#define EXIT()                      asm("bis #0x210, r2")
+#define EXIT()                                      \
+  do {                                              \
+    /* set CPUOFF bit in status register */         \
+    asm("bis #0x210, r2");                          \
+    while(1);                                       \
+  } while(0)
+
 #define ASSERT(cond)                                \
   do {                                              \
     if (!(cond))                                    \

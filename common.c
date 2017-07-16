@@ -34,6 +34,8 @@ int putchar(int c)
     void do_sancus_enable(struct SancusModule *sm)
     {
         ASSERT(sancus_enable(sm));
+        ASSERT(sm->id == sancus_get_id(sm->public_start));
+
         printf("SM %s with ID %d enabled\t: 0x%.4x 0x%.4x 0x%.4x 0x%.4x\n",
             sm->name, sm->id,
             (uintptr_t) sm->public_start, (uintptr_t) sm->public_end,
