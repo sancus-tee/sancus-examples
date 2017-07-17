@@ -49,6 +49,12 @@ int main()
 
     do_sancus_enable(&hello);
 
+#if 0
+    volatile int* p = &hello_secret;
+    pr_info("accessing secret data..");
+    volatile int a = *p;
+#endif
+
     hello_entry_fn();
     hello_disable();
 

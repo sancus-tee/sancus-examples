@@ -26,13 +26,15 @@ int main()
     do_sancus_enable(&foo);
     do_sancus_enable(&bar);
 
+    pr_info("entering foo..");
     rv = enter_foo(128);
     pr_info1("SM foo returned %d\n", rv);
     
+    pr_info("comparing unprotected/SM calculations..");
     u = unpr_mul(rv, 100, 35);
     f = foo_mul(rv, 100, 35);
     ASSERT( u==f );
 
     pr_info("all done!");
-    return 0;
+    EXIT();
 }

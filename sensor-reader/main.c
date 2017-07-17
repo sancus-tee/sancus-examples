@@ -23,5 +23,5 @@ int main()
     dump_buf((char*)&out.tag, sizeof(out.tag), "  Tag");
 
     pr_info("all done!");
-    return 0;
+    EXIT();
 }

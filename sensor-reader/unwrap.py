@@ -42,6 +42,6 @@ cmd = ['sancus-crypto', '--unwrap', ad, cipher, tag, '--key', sm_key]
 if (not rv):
     print('{}: authentic sensor reading: {}'.format(me, out.hex()))
 else:
-    print('{}: bad sensor reading: {}'.format(me, out.decode('utf-8')))
+    print('{}: fail: bad sensor reading: {}'.format(me, out.decode('utf-8')))
 
 sys.exit(rv)
