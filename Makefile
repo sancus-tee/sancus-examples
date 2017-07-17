@@ -1,7 +1,7 @@
 SUPPORT  = sancus-contiki
 EXAMPLES = hello-world sensor-reader
 EXAMPLES_CONTIKI \
-         = contiki-hello-world contiki-sm-server ta-demo
+         = contiki-hello-world contiki-sm-server contiki-ta-demo
 CONTIKI_EX_PATH = sancus-contiki/examples
 
 all: ${SUPPORT} ${EXAMPLES} ${EXAMPLES_CONTIKI}
@@ -25,10 +25,8 @@ contiki-hello-world: sancus-contiki
 contiki-sm-server: sancus-contiki
 	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/sm-server
 
-ta-demo: sancus-contiki
-	${MAKE} -C $@
-#	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta_mod clean
-#	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta_mod
+contiki-ta-demo: sancus-contiki
+	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta-demo
 
 clean: sancus-contiki-clean
 	for dir in ${EXAMPLES}; do \
@@ -38,5 +36,6 @@ clean: sancus-contiki-clean
 sancus-contiki-clean: sancus-contiki
 	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/hello-world clean
 	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/sm-server clean
+	${MAKE} TARGET=sancus-fpga -C ${CONTIKI_EX_PATH}/ta-demo clean
 
 distclean: clean

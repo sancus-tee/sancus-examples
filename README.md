@@ -15,8 +15,8 @@ Elementary example programs to test your Sancus distribution.
       that can be invoked from a Contiki task.
     - **examples/sm-server:** Sancus module loader and minimalist
       infrastructure for reactive SM programming.
-- _[broken]_ **ta-demo:** "Lightweight and flexible trust assessment modules
-  for the Internet of Things", [ESORICS 2015](https://distrinet.cs.kuleuven.be/software/sancus/publications/esorics15.pdf).
+    - **ta-demo:** "Lightweight and flexible trust assessment modules
+      for the Internet of Things", [ESORICS 2015](https://distrinet.cs.kuleuven.be/software/sancus/publications/esorics15.pdf).
 
 ## Running the Examples
 
