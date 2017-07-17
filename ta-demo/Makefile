@@ -25,7 +25,7 @@ copy-src_ta_mod:
 	cp -r ta_mod ${CONTIKIDIR}/examples/
 
 ta_demo.openmsp430: copy-src_ta_mod
-	${MAKE} -C ${CONTIKIDIR}/${TAMOD} \
+	${MAKE} V=1 -C ${CONTIKIDIR}/${TAMOD} \
           TARGET=sancus-fpga SANCUS_DIR="$$SANCUS_DIR"
 	cp ${CONTIKIDIR}/${TAMOD}/ta_demo.openmsp430 ./
 	msp430-size --format=SysV -t -d ta_demo.openmsp430

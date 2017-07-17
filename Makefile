@@ -1,7 +1,7 @@
 SUPPORT  = sancus-contiki
 EXAMPLES = hello-world sensor-reader
 EXAMPLES_CONTIKI \
-         = contiki-hello-world contiki-sm-server #ta-demo
+         = contiki-hello-world contiki-sm-server ta-demo
 CONTIKI_EX_PATH = sancus-contiki/examples
 
 all: ${SUPPORT} ${EXAMPLES} ${EXAMPLES_CONTIKI}

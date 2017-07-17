@@ -1,5 +1,10 @@
 #ifndef __TA_MOD_EXTERNAL_H
 
+#include "contiki.h"
+
+extern struct process ta_mod_process;
+
+
 #define TA_SUCCESS   0
 #define TA_FAILURE   1
 

@@ -1,14 +1,11 @@
 #ifndef __TA_MOD_H
 
-#include "contiki.h"
 #include "config.h"
-
 #include "ta_mod_external.h"
 
 #define TA_SM_NAME   TACore
 
 
-extern struct process ta_mod_process;
 extern struct SancusModule TACore;
 
 
