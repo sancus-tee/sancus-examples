@@ -35,6 +35,6 @@ run: load
 endif
 
 clean:
-	$(RM) $(TARGET) $(TARGET_NO_MAC) $(TARGET_WRAPPED) $(OBJECTS)
+	$(RM) $(TARGET) $(TARGET_NO_MAC) $(TARGET_WRAP) $(TARGET_WRAPPED) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd
