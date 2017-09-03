@@ -1,6 +1,6 @@
 #include "foo.h"
 #include "bar.h"
-#include "../common.h"
+#include <sancus_support/sm_io.h>
 
 DECLARE_SM(foo, 0x1234);
 

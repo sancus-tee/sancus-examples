@@ -1,7 +1,7 @@
 #include <msp430.h>
 #include <stdio.h>
 #include <sancus/sm_support.h>
-#include "../common.h"
+#include <sancus_support/sm_io.h>
 #include "foo.h"
 #include "bar.h"
 
@@ -20,11 +20,11 @@ int SM_ENTRY(foo) foo_mul(int a, int b, int c)
 int main()
 {
     int rv, u, f;
-    msp430_init();
+    msp430_io_init();
 
     pr_info("enabling SMs..");
-    do_sancus_enable(&foo);
-    do_sancus_enable(&bar);
+    sancus_enable_info(&foo);
+    sancus_enable_info(&bar);
 
     pr_info("entering foo..");
     rv = enter_foo(128);

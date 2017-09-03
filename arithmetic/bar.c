@@ -1,5 +1,5 @@
 #include "bar.h"
-#include "../common.h"
+#include <sancus_support/sm_io.h>
 
 DECLARE_SM(bar, 0x1234);
 

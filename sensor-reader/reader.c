@@ -1,6 +1,6 @@
 #include "reader.h"
 #include <sancus/sm_support.h>
-#include "../common.h"
+#include <sancus_support/sm_io.h>
 
 DECLARE_SM(reader, 0x1234);
 

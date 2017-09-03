@@ -1,23 +1,46 @@
 #include <msp430.h>
 #include <stdio.h>
 #include <sancus/sm_support.h>
-#include "../common.h"
+#include <sancus_support/sm_io.h>
+
+void exit_success(void);
+
+/* ======== HELLO WORLD SM ======== */
 
 DECLARE_SM(hello, 0x1234);
 
-int SM_DATA(hello) hello_secret;
-const int SM_DATA(hello) hello_const = 0xbeef;
+int       SM_DATA(hello) hello_secret;
+int const SM_DATA(hello) hello_const = 0xbeef;
 
-static void SM_FUNC(hello) hello_internal_fn(sm_id id)
+void SM_FUNC(hello) hello_init(void)
 {
-    pr_info2("Hi from a Sancus module with ID %d, called by %d\n",
-        sancus_get_self_id(), id);
+    hello_secret = 0xdead;
 }
 
-void SM_ENTRY(hello) hello_entry_fn(void)
+void SM_ENTRY(hello) hello_greet(void)
 {
-    sm_id caller_id = sancus_get_caller_id();
-    hello_internal_fn(caller_id);
+    hello_init();
+    pr_info2("Hi from SM with ID %d, called by %d\n",
+        sancus_get_self_id(), sancus_get_caller_id());
+}
+
+void SM_ENTRY(hello) hello_disable(void)
+{
+    sancus_disable(exit_success);
+}
+
+/* ======== UNTRUSTED CONTEXT ======== */
+
+int main()
+{
+    msp430_io_init();
+    sancus_enable_info(&hello);
+
+    hello_greet();
+    hello_disable();
+
+    // should never reach here
+    ASSERT(0);
 }
 
 void exit_success(void)
@@ -25,7 +48,7 @@ void exit_success(void)
     // TODO unprotect instruction should also clear caller ID
     //ASSERT(!sancus_get_caller_id());
 
-    ASSERT(!sancus_get_id(hello_entry_fn));
+    ASSERT(!sancus_get_id(hello_greet));
     ASSERT(!hello_secret);
 
     // TODO text section does not seem to be properly cleared?
@@ -35,29 +58,4 @@ void exit_success(void)
 
     pr_info("SM disabled; all done!");
     EXIT();
-}
-
-void SM_ENTRY(hello) hello_disable(void)
-{
-    hello_secret = 0xffff;
-    sancus_disable(exit_success);
-}
-
-int main()
-{
-    msp430_init();
-
-    do_sancus_enable(&hello);
-
-#if 0
-    volatile int* p = &hello_secret;
-    pr_info("accessing secret data..");
-    volatile int a = *p;
-#endif
-
-    hello_entry_fn();
-    hello_disable();
-
-    // should never reach here
-    ASSERT(0);
 }
