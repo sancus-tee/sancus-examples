@@ -26,6 +26,6 @@ install:
   - cd sancus-support && mkdir build && cd build && cmake .. && sudo make install && cd ../../
 
 script:
-  - unbuffer make -C hello-world SIM=1 clean sim | tee sim.out && ! grep -iq "fail" sim.out
-  - unbuffer make -C sensor-reader SIM=1 clean sim | tee sim.out && ! grep -iq "fail" sim.out
-  - unbuffer make -C arithmetic SIM=1 clean sim | tee sim.out && ! grep -iq "fail" sim.out
+  - unbuffer make -C hello-world clean sim | tee sim.out && ! grep -iq "fail" sim.out
+  - unbuffer make -C sensor-reader clean sim | tee sim.out && ! grep -iq "fail" sim.out
+  - unbuffer make -C arithmetic clean sim | tee sim.out && ! grep -iq "fail" sim.out

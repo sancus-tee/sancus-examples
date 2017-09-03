@@ -18,5 +18,5 @@ build the program, simulate the resulting binary, and verify its output, simply
 run:
 
 ```bash
-$ make SIM=1 clean sim
+$ make clean sim
 ```

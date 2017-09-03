@@ -20,12 +20,6 @@ load: $(TARGET)
 sim: $(TARGET)
 	$(SANCUS_SIM) $(SIMFLAGS) $<
 
-ifeq ($(SIM),1)
-run: sim
-else
-run: load
-endif
-
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin

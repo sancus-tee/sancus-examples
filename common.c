@@ -2,17 +2,6 @@
 #include <sancus_support/uart.h>
 #include <msp430.h>
 
-#ifndef __SANCUS_SIM
-    #include <sancus_support/uart.h>
-#else
-    #define uart_init();
-    #define uart_write_byte(c)          \
-      do {                              \
-        P1OUT = c;                      \
-        P1OUT |= 0x80;                  \
-      } while(0)
-#endif
-
 void msp430_init(void)
 {
     WDTCTL = WDTPW | WDTHOLD;
@@ -30,18 +19,16 @@ int putchar(int c)
     return c;
 }
 
-#ifndef __SANCUS_SIM
-    void do_sancus_enable(struct SancusModule *sm)
-    {
-        ASSERT(sancus_enable(sm));
-        ASSERT(sm->id == sancus_get_id(sm->public_start));
+void do_sancus_enable(struct SancusModule *sm)
+{
+    ASSERT(sancus_enable(sm));
+    ASSERT(sm->id == sancus_get_id(sm->public_start));
 
-        printf("SM %s with ID %d enabled\t: 0x%.4x 0x%.4x 0x%.4x 0x%.4x\n",
-            sm->name, sm->id,
-            (uintptr_t) sm->public_start, (uintptr_t) sm->public_end,
-            (uintptr_t) sm->secret_start, (uintptr_t) sm->secret_end);
-    }
-#endif
+    printf("SM %s with ID %d enabled\t: 0x%.4x 0x%.4x 0x%.4x 0x%.4x\n",
+        sm->name, sm->id,
+        (uintptr_t) sm->public_start, (uintptr_t) sm->public_end,
+        (uintptr_t) sm->secret_start, (uintptr_t) sm->secret_end);
+}
 
 #ifndef QUIET
     void __attribute__((noinline)) printf0(const char* str)

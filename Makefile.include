@@ -27,10 +27,6 @@ SIMFLAGS            = $(MEMFLAGS)
 CRYPTOFLAGS         = --fill-macs --key $(VENDOR_KEY)
 LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)
 
-ifeq ($(SIM),1)
-    CFLAGS += -D__SANCUS_SIM
-endif
-
 ifeq ($(QUIET),1)
     CFLAGS += -DQUIET
 endif

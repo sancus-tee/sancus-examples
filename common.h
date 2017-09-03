@@ -29,11 +29,7 @@
 void msp430_init(void);
 int __attribute__((noinline)) putchar(int c);
 
-#ifdef __SANCUS_SIM
-    #define do_sancus_enable(sm)    ASSERT(sancus_enable(sm))
-#else
-    void do_sancus_enable(struct SancusModule *sm);
-#endif
+void do_sancus_enable(struct SancusModule *sm);
 
 #define __always_inline static inline __attribute__((always_inline))
 

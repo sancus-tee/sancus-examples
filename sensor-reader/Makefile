@@ -25,12 +25,6 @@ sim: $(TARGET)
 	unbuffer $(SANCUS_SIM) $(SIMFLAGS) $< | tee sim.out
 	./unwrap.py $(READER_SM_KEY) sim.out
 
-ifeq ($(SIM),1)
-run: sim
-else
-run: load
-endif
-
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin sim.out

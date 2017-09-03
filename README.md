@@ -25,7 +25,7 @@ All example programs can be built for either the Sancus Verilog simulator, or
 for an FPGA. To run the example in `sancus-sim`, proceed as follows:
 
 ```bash
-$ make SIM=1 clean sim
+$ make clean sim
 ```
 
 Alternatively, to upload the example to an FPGA using `sancus-loader`:
