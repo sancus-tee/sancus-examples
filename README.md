@@ -1,7 +1,7 @@
 # sancus-examples
 [![Build Status](https://travis-ci.org/sancus-pma/sancus-examples.svg?branch=master)](https://travis-ci.org/sancus-pma/sancus-examples)
 
-Elementary example programs to test your Sancus distribution.
+Elementary example programs to test your Sancus distribution, and showcase the available security properties.
 
 ## Overview
 
