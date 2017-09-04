@@ -5,31 +5,29 @@ Elementary example programs to test your Sancus distribution.
 
 ## Overview
 
-- **hello-world:** minimal working example of a Sancus program with an SM that
-  dumps "hello world" on (untrusted) stdout.
-- **sensor-reader:** example program from the paper, demonstrating secure linking
-  between a reader SM and a secure memory-mapped I/O sensor SM.
-- **arithmetic:** dummy SMs performing secure (inlined) arithmetic operations.
-- **sancus-contiki:** Supporting files for some of the demos: port of the
-  Contiki OS with support for Sancus modules.
-    - **examples/hello-world:** minimal example of an SM
-      that can be invoked from a Contiki task.
-    - **examples/sm-server:** Sancus module loader and minimalist
-      infrastructure for reactive SM programming.
-    - **ta-demo:** "Lightweight and flexible trust assessment modules
-      for the Internet of Things", [ESORICS 2015](https://distrinet.cs.kuleuven.be/software/sancus/publications/esorics15.pdf).
+| Security feature          | Example program                | Comments                                                        |
+|-------------------------- |--------------------------------|-----------------------------------------------------------------|
+| Software module isolation | [hello-world](hello-world)     | Minimal working example to enable/disable a Sancus module.      |
+| Secure linking            | [sensor-reader](sensor-reader) | Caller/callee authentication between sensor and reader SMs.     |
+| Remote attestation        | [sensor-reader](sensor-reader) | Compute MAC over fresh challenge (nonce).                       |
+| Secure communication      | [sensor-reader](sensor-reader) | Authenticated encryption with associated data primitive.        |
+| Secure memory-mapped I/O  | [sensor-reader](sensor-reader) | Assembly driver SM with exclusive ownership over sensor device. |
+| Secure interrupt handling | todo                           | Minimalist program using `SM_ISR` for GPIO IRQ?                 |
+| Confidential deployment   | todo                           | Issue #2                                                        |
+| Dynamic loading           | todo                           | Issue #3                                                        |
+| Reactive programming      | todo                           | Minimalist (non-contiki) program with `SM_INPUT/OUTPUT`?        |
 
-## Running the Examples
 
-All example programs can be built for either the Sancus Verilog simulator, or
-for an FPGA. To run the example in `sancus-sim`, proceed as follows:
+## Running the examples
+
+All example binaries can be ran in either the Sancus Verilog simulator, or on an external FPGA. To build and run the example in `sancus-sim`, proceed as follows:
 
 ```bash
-$ make clean sim
+$ make sim
 ```
 
 Alternatively, to upload the example to an FPGA using `sancus-loader`:
 
 ```bash
-$ make clean load
+$ make load
 ```
