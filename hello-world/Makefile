@@ -5,6 +5,8 @@ OBJECTS         = $(SOURCES:.c=.o)
 
 TARGET          = main.elf
 TARGET_NO_MAC   = no_mac_$(TARGET)
+TARGET_WRAP     = wrap_$(TARGET)
+TARGET_WRAPPED  = wrapped_$(TARGET)
 
 all: $(TARGET)
 
@@ -14,6 +16,12 @@ $(TARGET_NO_MAC): $(OBJECTS)
 $(TARGET): $(TARGET_NO_MAC)
 	$(SANCUS_CRYPTO) $(CRYPTOFLAGS) -o $@ $<
 
+$(TARGET_WRAP): $(OBJECTS)
+	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
+
+$(TARGET_WRAPPED): $(TARGET_WRAP)
+	$(SANCUS_CRYPTO) --wrap-sm-text-sections --key $(VENDOR_KEY) --verbose -o $@ $^
+
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
@@ -21,6 +29,6 @@ sim: $(TARGET)
 	$(SANCUS_SIM) $(SIMFLAGS) $<
 
 clean:
-	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
+	$(RM) $(TARGET) $(TARGET_NO_MAC) $(TARGET_WRAP) $(TARGET_WRAPPED) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd
