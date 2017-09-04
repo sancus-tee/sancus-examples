@@ -14,7 +14,7 @@ $(TARGET_NO_MAC): $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 $(TARGET): $(TARGET_NO_MAC)
-	$(SANCUS_CRYPTO) $(CRYPTOFLAGS) -o $@ $<
+	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
 
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<

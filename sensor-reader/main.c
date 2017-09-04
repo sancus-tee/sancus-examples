@@ -9,8 +9,10 @@ int main()
     msp430_io_init();
 
     pr_info("enabling sensor/reader SMs..");
-    sancus_enable_info(&sensor);
-    sancus_enable_info(&reader);
+    sancus_enable(&sensor);
+    pr_sm_info(&sensor);
+    sancus_enable(&reader);
+    pr_sm_info(&reader);
 
     pr_info("requesting sensor readings..");
     nonce_t no = 0xabcd;

@@ -23,8 +23,10 @@ int main()
     msp430_io_init();
 
     pr_info("enabling SMs..");
-    sancus_enable_info(&foo);
-    sancus_enable_info(&bar);
+    sancus_enable(&foo);
+    pr_sm_info(&foo);
+    sancus_enable(&bar);
+    pr_sm_info(&bar);
 
     pr_info("entering foo..");
     rv = enter_foo(128);

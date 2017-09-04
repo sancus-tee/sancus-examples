@@ -14,7 +14,8 @@ int const SM_DATA(hello) hello_const = 0xbeef;
 
 void SM_FUNC(hello) hello_init(void)
 {
-    hello_secret = 0xdead;
+    /* Confidential loading guarantees secrecy of constant in text section. */
+    hello_secret = hello_const;
 }
 
 void SM_ENTRY(hello) hello_greet(void)
@@ -34,7 +35,8 @@ void SM_ENTRY(hello) hello_disable(void)
 int main()
 {
     msp430_io_init();
-    sancus_enable_info(&hello);
+    sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
+    pr_sm_info(&hello);
 
     hello_greet();
     hello_disable();
@@ -45,16 +47,13 @@ int main()
 
 void exit_success(void)
 {
+    volatile int *p = (volatile int *) &hello_const;
+
     // TODO unprotect instruction should also clear caller ID
     //ASSERT(!sancus_get_caller_id());
-
     ASSERT(!sancus_get_id(hello_greet));
     ASSERT(!hello_secret);
-
-    // TODO text section does not seem to be properly cleared?
-    // (we need a unit test with Verilog stimulus in sancus-core)
-    // printf("const is %x\n", hello_const);
-    // ASSERT(hello_const == 0x0);
+    ASSERT(!(*p));
 
     pr_info("SM disabled; all done!");
     EXIT();
