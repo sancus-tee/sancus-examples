@@ -13,7 +13,7 @@ The following programs showcase the security properties offered by a Sancus proc
 | Secure linking            | [sensor-reader](sensor-reader) | Caller/callee authentication between sensor and reader SMs.     |
 | Remote attestation        | [sensor-reader](sensor-reader) | Compute MAC over fresh challenge (nonce).                       |
 | Secure communication      | [sensor-reader](sensor-reader) | Authenticated encryption with associated data primitive.        |
-| Confidential deployment   | todo                           | Issue #2                                                        |
+| Confidential deployment   | [hello-world](hello-world)     | SM text section is transparently encrypted at build time.       |
 
 Building upon the above primitives, compiler support has been implemented for the following additional features.
 
