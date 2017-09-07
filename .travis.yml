@@ -29,3 +29,4 @@ script:
   - unbuffer make -C hello-world clean sim | tee sim.out && ! grep -iq "fail" sim.out
   - unbuffer make -C sensor-reader clean sim | tee sim.out && ! grep -iq "fail" sim.out
   - unbuffer make -C arithmetic clean sim | tee sim.out && ! grep -iq "fail" sim.out
+  - unbuffer make -C fileio clean sim | tee sim.out && ! grep -iq "fail" sim.out
