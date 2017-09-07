@@ -20,9 +20,9 @@ int main()
     get_readings(no, &out);
 
     pr_info("dumping sealed output from reader SM..");
-    dump_buf((char*)&no, sizeof(no), "  Nonce");
-    dump_buf((char*)&out.cipher, sizeof(out.cipher), "  Cipher");
-    dump_buf((char*)&out.tag, sizeof(out.tag), "  Tag");
+    dump_buf((uint8_t*)&no, sizeof(no), "  Nonce");
+    dump_buf((uint8_t*)&out.cipher, sizeof(out.cipher), "  Cipher");
+    dump_buf((uint8_t*)&out.tag, sizeof(out.tag), "  Tag");
 
     pr_info("all done!");
     EXIT();

@@ -22,7 +22,7 @@ void SM_ENTRY(reader) get_readings(nonce_t no, ReaderOutput* out)
 
     /* Securely verify and call sensor SM. */
     sensor_data_t data = read_sensor_data();
-    dump_buf((char*)&data, sizeof(sensor_data_t), "  Data");
+    dump_buf((uint8_t*)&data, sizeof(sensor_data_t), "  Data");
 
     /* Transform and seal sensor readings. */
     sensor_data_t transformed = transform_readings(data);
