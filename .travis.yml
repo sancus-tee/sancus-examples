@@ -1,19 +1,20 @@
 language: c
-sudo: enabled
 dist: trusty
+sudo: required
 
 notifications:
   email: false
 
 before_install:
-  - sudo apt-get install build-essential cmake python3 iverilog tk binutils-msp430 gcc-msp430 msp430-libc msp430mcu expect-dev -y
-  - sudo apt-get remove cmake -y
+  - sudo apt-get install build-essential python3 iverilog tk binutils-msp430 gcc-msp430 msp430-libc msp430mcu expect-dev -y
+  - pyenv global 3.5 && pyenv version && python3 --version
+  - python3 -m pip install pyelftools && printf "import elftools\nprint(elftools)" | python3
+  - sudo apt-get purge clang llvm llvm-* -y && sudo rm -Rf /usr/local/clang-*
+  - wget https://distrinet.cs.kuleuven.be/software/sancus/downloads/clang-sancus_4.0.0_amd64_trusty.deb && sudo dpkg -i clang-sancus_4.0.0_amd64_trusty.deb
+  - clang --version && ldd `which clang`
+  - sudo apt-get purge cmake -y
   - curl -SL https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz | sudo tar -xzC /opt
   - export PATH=$PATH:/opt/cmake-3.5.2-Linux-x86_64/bin && cmake --version
-  - sudo apt-get remove clang -y && sudo rm -Rf /usr/local/clang-3.5.0/
-  - wget https://distrinet.cs.kuleuven.be/software/sancus/downloads/clang-sancus_4.0.0_amd64_trusty.deb && sudo dpkg -i clang-sancus_4.0.0_amd64_trusty.deb
-  - clang --version
-  - python3 -m pip install pyelftools && printf "import elftools\nprint(elftools)" | python3
   - curl -SL software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/latest/exports/msp430-gcc-6.2.1.16_linux64.tar.bz2 | sudo tar -xjC /opt 
   - export PATH=$PATH:/opt/msp430-gcc-6.2.1.16_linux64/bin && msp430-elf-gcc --version
 
@@ -26,7 +27,7 @@ install:
   - cd sancus-support && mkdir build && cd build && cmake .. && sudo make install && cd ../../
 
 script:
-  - unbuffer make -C hello-world clean sim | tee sim.out && ! grep -iq "fail" sim.out
-  - unbuffer make -C sensor-reader clean sim | tee sim.out && ! grep -iq "fail" sim.out
-  - unbuffer make -C arithmetic clean sim | tee sim.out && ! grep -iq "fail" sim.out
-  - unbuffer make -C fileio clean sim | tee sim.out && ! grep -iq "fail" sim.out
+  - unbuffer make -C hello-world clean sim   | tee sim.out && ! grep -iqE "fail|error:" sim.out
+  - unbuffer make -C sensor-reader clean sim | tee sim.out && ! grep -iqE "fail|error:" sim.out
+  - unbuffer make -C arithmetic clean sim    | tee sim.out && ! grep -iqE "fail|error:" sim.out
+  - unbuffer make -C fileio clean sim        | tee sim.out && ! grep -iqE "fail|error:" sim.out
