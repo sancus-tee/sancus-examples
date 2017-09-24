@@ -11,16 +11,17 @@ language: c
 
 before_install:
   - git clone https://github.com/sancus-pma/sancus-main.git
-  - cd sancus-main/docker && make build
+  - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
 
 script:
-  - docker run sancus-devel /bin/sh -c \
+  - docker run -t sancus-devel /bin/sh -c \
         "cd /sancus/sancus-examples && git checkout $TRAVIS_BRANCH &&
-         make $TARGET.sim"
+         make SANCUS_SECURITY=$SECURITY $TARGET.sim"
   - docker ps -a
 
 env:
-  - TARGET=hello-world
-  - TARGET=sensor-reader
-  - TARGET=arithmetic
-  - TARGET=fileio
+  - TARGET=hello-world   SECURITY=64
+  - TARGET=hello-world   SECURITY=128
+  - TARGET=sensor-reader SECURITY=64
+  - TARGET=arithmetic    SECURITY=64
+  - TARGET=fileio        SECURITY=64

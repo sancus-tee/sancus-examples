@@ -4,6 +4,15 @@ else
   SANCUS_SUPPORT_DIR  = ${SANCUS_DIR}/share/sancus-support
 endif
 
+ifndef SANCUS_SECURITY
+  SANCUS_SECURITY   = 64
+endif
+ifeq ($(SANCUS_SECURITY), 64)
+    SANCUS_KEY      = deadbeefcafebabe
+else
+    SANCUS_KEY      = deadbeefcafebabec0defeeddefec8ed
+endif
+
 CC                  = sancus-cc
 LD                  = sancus-ld
 SANCUS_CRYPTO       = sancus-crypto
@@ -11,7 +20,6 @@ SANCUS_SIM          = sancus-sim
 SANCUS_LOAD         = sancus-loader
 RM                  = rm -f
 
-SANCUS_KEY          = deadbeefcafebabe
 VENDOR_ID           = 1234
 RAM_SIZE            = 16K
 ROM_SIZE            = 41K
