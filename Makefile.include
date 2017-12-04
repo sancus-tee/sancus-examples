@@ -33,7 +33,7 @@ CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors -fcolor-di
 LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -lsm-io --inline-arithmetic --standalone --verbose
 SIMFLAGS            = $(MEMFLAGS)
 CRYPTOFLAGS         = --key $(VENDOR_KEY) --verbose
-LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE) -dump-io
+LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)
 
 ifeq ($(QUIET),1)
     CFLAGS += -DQUIET
