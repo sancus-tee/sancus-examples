@@ -29,7 +29,7 @@ FPGA_RATE           = 115200
 VENDOR_KEY          = $(shell $(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-key $(VENDOR_ID) | xxd -p)
 MEMFLAGS            = --ram $(RAM_SIZE) --rom $(ROM_SIZE) 
 
-CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors -fcolor-diagnostics -Os
+CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors -fcolor-diagnostics -Os -g
 LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -lsm-io --inline-arithmetic --standalone --verbose
 SIMFLAGS            = $(MEMFLAGS)
 CRYPTOFLAGS         = --key $(VENDOR_KEY) --verbose
