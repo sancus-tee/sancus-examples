@@ -30,7 +30,7 @@ VENDOR_KEY          = $(shell $(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-
 MEMFLAGS            = --ram $(RAM_SIZE) --rom $(ROM_SIZE) 
 
 CFLAGS              = -I$(SANCUS_SUPPORT_DIR)/include/ -Wfatal-errors -fcolor-diagnostics -Os -g
-LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -lsm-io --inline-arithmetic --standalone --verbose
+LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -lsm-io -ldev --inline-arithmetic --standalone --verbose
 SIMFLAGS            = $(MEMFLAGS)
 CRYPTOFLAGS         = --key $(VENDOR_KEY) --verbose
 LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)
