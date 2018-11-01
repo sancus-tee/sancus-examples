@@ -25,3 +25,4 @@ env:
   - TARGET=sensor-reader SECURITY=64
   - TARGET=arithmetic    SECURITY=64
   - TARGET=fileio        SECURITY=64
+  - TARGET=timer         SECURITY=64
