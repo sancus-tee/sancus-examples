@@ -14,7 +14,7 @@ DECLARE_SM(foo, 0x1234);
 void SM_ENTRY(foo) foo_enter()
 {
     while (c == '0');
-    pr_info("Hello from Foo\n");
+    pr_info("Hello from Foo");
 }
 
 
@@ -28,7 +28,10 @@ void timerA_isr(void)
     timer_disable();
     pr_info1("Hi from Timer_A ISR! (latency=%d cycles IRQ to ISR)\n",
                 timer_latency);
-    c = '1';
+    if (c == '0')
+        c = '1';
+    else
+        c = '0';
 }
 
 int main()
@@ -53,6 +56,10 @@ int main()
     pr_info("waiting for interrupting Foo...");
     timer_irq(150);
     foo_enter();
+    
+    pr_info("waiting for normal interrupt...");
+    timer_irq(20);
+    while (c == '1');
 
     pr_info("exiting...");
     EXIT();
