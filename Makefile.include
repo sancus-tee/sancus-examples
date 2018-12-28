@@ -66,6 +66,7 @@ ifndef SLLVM_INSTALL_DIR
   LDFLAGS += --standalone
   LDFLAGS += --verbose
 else
+  CFLAGS += -I $(SLLVM_INSTALL_DIR)/include
   CFLAGS += -I $(SLLVM_INSTALL_DIR)/msp430-elf/include
   CFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-support/include
   CFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-compiler/include
