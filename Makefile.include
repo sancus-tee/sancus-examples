@@ -19,6 +19,7 @@ else
   LLC           = $(SLLVM_INSTALL_DIR)/bin/llc
   LD            = $(SLLVM_INSTALL_DIR)/bin/msp430-elf-gcc
   SANCUS_CRYPTO = $(SLLVM_INSTALL_DIR)/obsolete/sllvm/utils/crypto.py # TODO
+  AS            = $(SLLVM_INSTALL_DIR)/bin/msp430-elf-gcc
 endif
 
 ifndef SANCUS_DIR
@@ -50,8 +51,6 @@ LDFLAGS += -L$(SANCUS_SUPPORT_DIR)/lib/
 LDFLAGS += -lsm-io
 LDFLAGS += -ldev
 
-LLCFLAGS =
-
 ifndef SLLVM_INSTALL_DIR
   CFLAGS += -I$(SANCUS_SUPPORT_DIR)/include/ 
   CFLAGS += -Os
@@ -66,10 +65,13 @@ ifndef SLLVM_INSTALL_DIR
   LDFLAGS += --standalone
   LDFLAGS += --verbose
 else
-  CFLAGS += -I $(SLLVM_INSTALL_DIR)/include
-  CFLAGS += -I $(SLLVM_INSTALL_DIR)/msp430-elf/include
-  CFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-support/include
-  CFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-compiler/include
+  INCFLAGS =
+  INCFLAGS += -I $(SLLVM_INSTALL_DIR)/include
+  INCFLAGS += -I $(SLLVM_INSTALL_DIR)/msp430-elf/include
+  INCFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-support/include
+  INCFLAGS += -I $(SLLVM_INSTALL_DIR)/share/sancus-compiler/include
+
+  CFLAGS += $(INCFLAGS)
   CFLAGS += -D__$(shell echo $(MCU) | tr a-z A-Z)__
   CFLAGS += -Werror
   CFLAGS += -O0
@@ -84,11 +86,18 @@ else
   SANCUS_TRANSFORM_FLAGS += --load $(SLLVM_INSTALL_DIR)/lib/SLLVM.so
   SANCUS_TRANSFORM_FLAGS += --sancus-transform
 
+  LLCFLAGS =
   LLCFLAGS += -O3
+
+  ASFLAGS =
+  ASFLAGS += $(INCFLAGS)
+  ASFLAGS += -mmcu=$(MCU)
 
   LDFLAGS += -L $(SLLVM_INSTALL_DIR)/share/sancus-compiler/lib
   LDFLAGS += -l sancus-sm-support
   LDFLAGS += -L $(SLLVM_INSTALL_DIR)/include # For devices.csv and $(MCU).ld
+  LDFLAGS += -mmcu=$(MCU)
+  #LDFLAGS += -Tmsp430-elf-sllvm.x
 endif
 
 SIMFLAGS = 
@@ -126,6 +135,6 @@ ifdef SLLVM_INSTALL_DIR
 	$(LLC) $(LLCFLAGS) $< -o $@
 
 %.o: %.s
-	$(LD) $(LDFLAGS) -c $< -o $@
+	$(AS) $(ASFLAGS) -c $< -o $@
 
 endif
