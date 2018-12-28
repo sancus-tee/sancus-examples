@@ -1,5 +1,9 @@
 include ../Makefile.include
 
+ifndef SLLVM_INSTALL_DIR
+  LDFLAGS += --prepare-for-sm-text-section-wrapping
+endif
+
 SOURCES         = $(shell ls *.c)
 OBJECTS         = $(SOURCES:.c=.o)
 
@@ -9,7 +13,7 @@ TARGET_NO_WRAP  = no_wrap_$(TARGET)
 all: $(TARGET)
 
 $(TARGET_NO_WRAP): $(OBJECTS)
-	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^
 
 $(TARGET): $(TARGET_NO_WRAP)
 	$(SANCUS_CRYPTO) --wrap-sm-text-sections $(CRYPTOFLAGS) -o $@ $<
