@@ -10,12 +10,17 @@ int unpr_mul(int a, int b, int c)
     return (a * b) % c;
 }
 
+int SM_ENTRY(foo) foo_mul(int a, int b, int c)
+#if __clang_major__ < 5
 /* Also include a protected foo function here to test arithmetic inlining
    across compilation units. */
-int SM_ENTRY(foo) foo_mul(int a, int b, int c)
 {
     return (a * b) % c;
 }
+#else
+/* Cross compilation unit protected modules are not supported by SLLVM */
+;
+#endif
 
 int main()
 {
