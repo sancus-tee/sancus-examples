@@ -28,7 +28,7 @@ else
   SANCUS_SUPPORT_DIR  = $(SANCUS_DIR)/share/sancus-support
 endif
 
-MCU = msp430f149
+MCU = msp430sancus
 
 SANCUS_SIM  = sancus-sim
 SANCUS_LOAD = sancus-loader
@@ -96,8 +96,8 @@ else
   LDFLAGS += -L $(SLLVM_INSTALL_DIR)/share/sancus-compiler/lib
   LDFLAGS += -l sancus-sm-support
   LDFLAGS += -L $(SLLVM_INSTALL_DIR)/include # For devices.csv and $(MCU).ld
+  LDFLAGS += -Wl,-gc-sections # To garbage collect unused trusted rt functions
   LDFLAGS += -mmcu=$(MCU)
-  #LDFLAGS += -Tmsp430-elf-sllvm.x
 endif
 
 SIMFLAGS = 
