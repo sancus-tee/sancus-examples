@@ -13,7 +13,7 @@ TARGET_NO_WRAP  = no_wrap_$(TARGET)
 all: $(TARGET)
 
 $(TARGET_NO_WRAP): $(OBJECTS)
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(LD) $^ $(LDFLAGS) -o $@
 
 $(TARGET): $(TARGET_NO_WRAP)
 	$(SANCUS_CRYPTO) --wrap-sm-text-sections $(CRYPTOFLAGS) -o $@ $<

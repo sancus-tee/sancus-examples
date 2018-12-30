@@ -12,7 +12,7 @@ CFLAGS         += -DTEST_DATA=\"$(TEST_DATA)\"
 all: $(TARGET)
 
 $(TARGET_NO_MAC): $(OBJECTS)
-	$(LD) $(LDFLAGS) -ldev-fileio -o $@ $^
+	$(LD) $^ $(LDFLAGS) -ldev-fileio -o $@
 
 $(TARGET): $(TARGET_NO_MAC)
 	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
