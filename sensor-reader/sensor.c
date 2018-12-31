@@ -5,7 +5,7 @@ DECLARE_MMIO_SM(sensor, /*[secret_start, end[=*/ TSC_BASE, TSC_BASE + TSC_SIZE,
 
 sensor_data_t SM_MMIO_ENTRY(sensor) read_sensor_data(void)
 {
-#if __clang_version__ < 5
+#if __clang_major__ < 5
     asm("mov.b #1, %0       \n\t"
         "mov.w %1+0, r12    \n\t"
         "mov.w %1+2, r13    \n\t"
