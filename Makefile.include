@@ -12,13 +12,15 @@ ifndef SLLVM_INSTALL_DIR
   CC            = sancus-cc
   LD            = sancus-ld
   SANCUS_CRYPTO = sancus-crypto
+  SANCUS_SIM    = sancus-sim
 else
   SANCUS_DIR    = $(SLLVM_INSTALL_DIR)
   CC            = $(SLLVM_INSTALL_DIR)/bin/clang
   OPT           = $(SLLVM_INSTALL_DIR)/bin/opt
   LLC           = $(SLLVM_INSTALL_DIR)/bin/llc
   LD            = $(SLLVM_INSTALL_DIR)/bin/msp430-elf-gcc
-  SANCUS_CRYPTO = $(SLLVM_INSTALL_DIR)/obsolete/sllvm/utils/crypto.py # TODO
+  SANCUS_CRYPTO = $(SLLVM_INSTALL_DIR)/bin/crypto.py
+  SANCUS_SIM    = $(SLLVM_INSTALL_DIR)/bin/sancus-sim
   AS            = $(SLLVM_INSTALL_DIR)/bin/msp430-elf-gcc
 endif
 
@@ -30,7 +32,6 @@ endif
 
 MCU = msp430sancus
 
-SANCUS_SIM  = sancus-sim
 SANCUS_LOAD = sancus-loader
 RM          = rm -f
 
