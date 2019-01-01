@@ -9,3 +9,6 @@ sllvm_pm_foo_text_start = .;
 *(.sllvm.text.foo)
 *(.sllvm.text.foo.*)         /* Internalized runtime functions */
 sllvm_pm_foo_text_end = .;
+
+/* Hashes for secure linking */
+*(.sllvm.hash.*)
