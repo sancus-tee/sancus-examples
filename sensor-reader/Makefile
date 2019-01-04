@@ -8,6 +8,8 @@ TARGET_NO_MAC   = no_mac_$(TARGET)
 
 READER_SM_KEY   = `$(SANCUS_CRYPTO) --gen-sm-key reader --key $(VENDOR_KEY) main.elf | xxd -p`
 
+sensor.sancus.ll: SANCUS_TRANSFORM_FLAGS += --fix-data-section
+
 all: $(TARGET)
 
 $(TARGET_NO_MAC): $(OBJECTS)
