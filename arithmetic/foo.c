@@ -17,11 +17,3 @@ int SM_ENTRY(foo) enter_foo( int i )
     j = foo_div(k, 5) % i;
     return i * j;
 }
-
-/* Cross compilation unit protected modules are not supported by SLLVM */
-#if __clang_major__ >= 5
-int SM_ENTRY(foo) foo_mul(int a, int b, int c)
-{
-    return (a * b) % c;
-}
-#endif
