@@ -82,12 +82,7 @@ asm(".section __interrupt_vector_9,\"ax\",@progbits \n\t"
 __attribute__((naked))
 void timerA_isr_entry(void)
 {
-#if __clang_major__ < 5
     asm("mov &%0, &timer_latency        \n\t"
-#else
-    /* LLVM bug: See https://bugs.llvm.org/show_bug.cgi?id=39993 */
-    asm("mov &0x0170, &timer_latency    \n\t"
-#endif
         "cmp #0x0, r1                   \n\t"
         "jne no_sm                      \n\t"
         "; isr interrupted an sm        \n\t"
