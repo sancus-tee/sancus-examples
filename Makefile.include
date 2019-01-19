@@ -91,6 +91,7 @@ else
 
   LLCFLAGS =
   LLCFLAGS += -O3
+  #LLCFLAGS += -debug-only=msp430-lower
 
   ASFLAGS =
   ASFLAGS += $(INCFLAGS)
