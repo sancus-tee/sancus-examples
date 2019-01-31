@@ -8,5 +8,5 @@ sllvm_pm_sensor_text_start = .;
 *(.sllvm.text.sensor)
 sllvm_pm_sensor_text_end = .;
 
-/* Hashes for secure linking */
-*(.sllvm.hash.*)
+/* Symbols for secure linking */
+*(.sllvm.slink.*)
