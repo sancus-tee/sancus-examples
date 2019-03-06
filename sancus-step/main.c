@@ -43,7 +43,7 @@ void checkCounter(void)
 {
     if (counter != 0)
     {
-        if (counter != oldCounterValue && counter != oldCounterValue + 1)
+        if (!(counter == oldCounterValue || counter == oldCounterValue + 1))
         {
             printf("ERROR: not single stepping\n");
         }
