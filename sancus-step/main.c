@@ -1,7 +1,10 @@
+#include <msp430.h>
+#include <stdio.h>
+#include <sancus/sm_support.h>
 #include <sancus_support/sm_io.h>
-#include <sancus_support/timer.h>
 #include <sancus_support/sancus_step.h>
 
+#define MAX_COUNTER (0xf)
 
 int counter = 0x0;
 int oldCounterValue = 0x0;
@@ -44,9 +47,7 @@ void checkCounter(void)
     if (counter != 0)
     {
         if (!(counter == oldCounterValue || counter == oldCounterValue + 1))
-        {
-            printf("ERROR: not single stepping\n");
-        }
+            pr_info("ERROR: not single stepping\n");
         oldCounterValue = counter;
     }
     
@@ -61,6 +62,8 @@ int main()
     sancus_step_start();
     foo_enter();
     sancus_step_end();
+    if (counter != 0xe)
+        pr_info2("ERROR: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     
     pr_info("exiting...");
     EXIT();
