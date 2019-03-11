@@ -62,7 +62,7 @@ int main()
     sancus_step_start();
     foo_enter();
     sancus_step_end();
-    if (counter != 0xe)
+    if (counter != 0xf)
         pr_info2("ERROR: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     
     pr_info("exiting...");
