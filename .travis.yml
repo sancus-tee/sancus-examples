@@ -11,7 +11,8 @@ language: c
 
 before_install:
   - git clone https://github.com/Sven-C/sancus-main.git
-  - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
+  - cd sancus-main && git checkout travis-ci
+  - cd docker && make build SANCUS_SECURITY=$SECURITY 
 
 script:
   - docker run -t sancus-devel /bin/sh -c \
