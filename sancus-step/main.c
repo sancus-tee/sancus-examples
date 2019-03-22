@@ -47,10 +47,11 @@ void checkCounter(void)
     if (counter != 0)
     {
         if (!(counter == oldCounterValue || counter == oldCounterValue + 1))
-            pr_info("ERROR: not single stepping\n");
+            pr_info("error: not single stepping\n");
+        if (counter == oldCounterValue && counter != 0 && counter != MAX_COUNTER)
+            pr_info("warning: zero-stepping\n");
         oldCounterValue = counter;
     }
-    
 }
 
 int main()
@@ -59,11 +60,11 @@ int main()
     asm("eint\n\t");
     sancus_enable(&foo);
 
-    sancus_step_start();
+    __ss_start();
     foo_enter();
-    sancus_step_end();
-    if (counter != 0xf)
-        pr_info2("ERROR: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
+    __ss_end();
+    if (counter != MAX_COUNTER)
+        pr_info2("error: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     
     pr_info("exiting...");
     EXIT();
