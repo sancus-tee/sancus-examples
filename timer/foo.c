@@ -65,21 +65,11 @@ int main()
     EXIT();
 }
 
-#if __clang_major__ < 5
-__attribute__((interrupt(TIMER_IRQ_VECTOR)))
-#else
-  /* TODO: Modern LLVM/Clang generates an interrupt specification
-   *       which is not compatible with modern mspgcc .
-   */
-asm(".section __interrupt_vector_9,\"ax\",@progbits \n\t"
-    ".word timerA_isr_entry                         \n\t");
-#endif
-
 /*
  * NOTE: we use a naked asm function here to be able to store IRQ latency.
  * (Timer_A continues counting from zero after IRQ generation)
  */
-__attribute__((naked))
+__attribute__((naked)) __attribute__((interrupt(TIMER_IRQ_VECTOR)))
 void timerA_isr_entry(void)
 {
     asm("mov &%0, &timer_latency        \n\t"
