@@ -27,3 +27,4 @@ env:
   - TARGET=fileio        SECURITY=64
   - TARGET=timer         SECURITY=64
   - TARGET=violation     SECURITY=64
+  - TARGET=sancus-step   SECURITY=64

@@ -26,7 +26,7 @@ void SM_ENTRY(foo) foo_enter()
 void timerA_isr(void)
 {
     timer_disable();
-    pr_info1("Hi from Timer_A ISR! (latency=%d cycles IRQ to ISR)\n",
+    pr_info1("Hi from Timer_A ISR!\n",
                 timer_latency);
     if (c == '0')
         c = '1';
@@ -53,72 +53,19 @@ int main()
     tsc2 = timer_tsc_end();
     pr_info1("dummy operation took %d cycles\n", tsc2-tsc1);
     
-    pr_info("waiting for interrupting Foo...");
+    pr_info("waiting for foo...");
     timer_irq(150);
     foo_enter();
-    
-    pr_info("waiting for normal interrupt...");
-    timer_irq(20);
+    asm("eint\n\t");
+    pr_info("waiting for unprotected code...");
+    timer_irq(50);
     while (c == '1');
+    timer_disable();
 
     pr_info("exiting...");
     EXIT();
 }
 
-/*
- * NOTE: we use a naked asm function here to be able to store IRQ latency.
- * (Timer_A continues counting from zero after IRQ generation)
- */
-__attribute__((naked)) __attribute__((interrupt(TIMER_IRQ_VECTOR)))
-void timerA_isr_entry(void)
-{
-    asm("mov &%0, &timer_latency        \n\t"
-        "cmp #0x0, r1                   \n\t"
-        "jne no_sm                      \n\t"
-        "; isr interrupted an sm        \n\t"
-        "mov &__unprotected_sp, r1      \n\t"
-        "; push #0x1 here               \n\t"
-        "; to remember how to return    \n\t"
-        "push #0x1                      \n\t"
-        "jmp cont                       \n\t"
-        "no_sm:                         \n\t"
-        "; same as the other case       \n\t"
-        "push #0x0                      \n\t"
-        "cont:                          \n\t"
-        "push r15                       \n\t"
-        "push r14                       \n\t"
-        "push r13                       \n\t"
-        "push r12                       \n\t"
-        "push r11                       \n\t"
-        "push r10                       \n\t"
-        "push r9                        \n\t"
-        "push r8                        \n\t"
-        "push r7                        \n\t"
-        "push r6                        \n\t"
-        "push r5                        \n\t"
-        "push r4                        \n\t"
-        "call #timerA_isr               \n\t"
-        "pop  r4                        \n\t"
-        "pop  r5                        \n\t"
-        "pop  r6                        \n\t"
-        "pop  r7                        \n\t"
-        "pop  r8                        \n\t"
-        "pop  r9                        \n\t"
-        "pop  r10                       \n\t"
-        "pop  r11                       \n\t"
-        "pop  r12                       \n\t"
-        "pop  r13                       \n\t"
-        "pop  r14                       \n\t"
-        "pop  r15                       \n\t"
-        "; we free here so we can do it \n\t"
-        "; just once                    \n\t"
-        "add #0x2, r1                   \n\t"
-        "cmp #0x0, -2(r1)               \n\t"
-        "jeq 1f                         \n\t"
-        "; resume interrupted sm        \n\t"
-        "br r15                         \n\t"
-        "1:                             \n\t"
-        "; return normally              \n\t"
-        "reti                           \n\t"
-        ::"m"(TAR):);
-}
+/* ======== TIMER A ISR ======== */
+TIMER_ISR_ENTRY(timerA_isr)
+
