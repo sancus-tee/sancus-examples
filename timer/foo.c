@@ -1,6 +1,10 @@
 #include <sancus_support/sm_io.h>
 #include <sancus_support/timer.h>
 
+#if __clang_major__ >= 5
+asm(".section __interrupt_vector_9,\"ax\",@progbits \n\t"
+    ".word timerA_isr_entry                         \n\t");
+#endif
 
 volatile char c = '0';
 volatile int timer_latency;
