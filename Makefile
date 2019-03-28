@@ -1,6 +1,5 @@
-SUBDIRS1       = $(shell find * -maxdepth 0 -type d)
-SUBDIRS2        = $(filter-out sancus-step, $(SUBDIRS1))
-SUBDIRS         = $(filter-out timer, $(SUBDIRS2))
+SUBDIRS1        = $(shell find * -maxdepth 0 -type d)
+SUBDIRS         = $(filter-out sancus-step, $(SUBDIRS1))
 SUBDIR_ALL      = $(SUBDIRS:=.all)
 SUBDIR_SIM      = $(SUBDIRS:=.sim)
 SUBDIR_CLEAN    = $(SUBDIRS:=.clean)
