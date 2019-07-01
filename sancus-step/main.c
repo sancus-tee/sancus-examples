@@ -44,6 +44,7 @@ void SM_ENTRY(foo) foo_enter(void)
 
 void checkCounter(void)
 {
+    __ss_print_latency();
     if (counter != 0)
     {
         if (!(counter == oldCounterValue || counter == oldCounterValue + 1))
@@ -71,4 +72,3 @@ int main()
 
 /* ======== TIMER A ISR ======== */
 SANCUS_STEP_ISR_ENTRY2(checkCounter, __ss_end)
-
