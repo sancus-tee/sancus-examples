@@ -54,6 +54,11 @@ void checkCounter(void)
     }
 }
 
+void stepDone(void)
+{
+    pr_info("single-stepping done!");
+}
+
 int main()
 {
     msp430_io_init();
@@ -71,7 +76,5 @@ int main()
 }
 
 /* ======== TIMER A ISR ======== */
-SANCUS_STEP_ISR_ENTRY(checkCounter)
-
-
+SANCUS_STEP_ISR_ENTRY(checkCounter, stepDone)
 
