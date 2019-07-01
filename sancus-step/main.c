@@ -63,7 +63,6 @@ int main()
 
     __ss_start();
     foo_enter();
-    __ss_end();
     if (counter != MAX_COUNTER)
         pr_info2("error: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     
@@ -72,8 +71,4 @@ int main()
 }
 
 /* ======== TIMER A ISR ======== */
-SANCUS_STEP_ISR_ENTRY(checkCounter, __ss_end)
 SANCUS_STEP_ISR_ENTRY2(checkCounter, __ss_end)
-
-
-
