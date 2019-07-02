@@ -50,6 +50,7 @@ void SM_ENTRY(foo) foo_enter(void)
 
 void checkCounter(void)
 {
+    __ss_print_latency();
     if (counter != 0)
     {
         if (!(counter == oldCounterValue || counter == oldCounterValue + 1))
@@ -60,11 +61,6 @@ void checkCounter(void)
     }
 }
 
-void stepDone(void)
-{
-    pr_info("single-stepping done!");
-}
-
 int main()
 {
     msp430_io_init();
@@ -73,7 +69,6 @@ int main()
 
     __ss_start();
     foo_enter();
-    __ss_end();
     if (counter != MAX_COUNTER)
         pr_info2("error: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     
@@ -82,5 +77,4 @@ int main()
 }
 
 /* ======== TIMER A ISR ======== */
-SANCUS_STEP_ISR_ENTRY(checkCounter, stepDone)
-
+SANCUS_STEP_ISR_ENTRY2(checkCounter, __ss_end)
