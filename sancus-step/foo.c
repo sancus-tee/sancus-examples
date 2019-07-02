@@ -7,8 +7,8 @@
 #define MAX_COUNTER (0xf)
 
 #if __clang_major__ >= 5
-asm(".section __interrupt_vector_9,\"ax\",@progbits \n\t"
-    ".word timerA_isr_entry                         \n\t");
+asm(".section __interrupt_vector_10,\"ax\",@progbits \n\t"
+    ".word timerA_isr_entry2                         \n\t");
 #endif
 
 
