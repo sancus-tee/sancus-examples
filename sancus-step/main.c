@@ -61,7 +61,7 @@ void irqHandler(void)
             pr_info("error: not single stepping\n");
         }
         if (counter == oldCounterValue && counter != 0 && counter != MAX_COUNTER) {
-            pr_info("warning: zero-stepping\n");
+            pr_info("error: zero-stepping\n");
         }
         oldCounterValue = counter;
         if (counter == MAX_COUNTER) {
