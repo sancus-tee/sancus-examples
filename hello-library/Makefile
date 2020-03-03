@@ -11,10 +11,12 @@ TARGET_NO_WRAP  = no_wrap_$(TARGET)
 LDFLAGS += -L$(LIBRARY_FOLDER) -l:$(CURDIR)/$(LIBRARY_FOLDER)/$(LIBRARY_FILENAME) --scan-libraries-for-sm 
 CFLAGS  += -I$(LIBRARY_FOLDER) 
 
-.PHONY: all $(LIBRARY_FOLDER) thin
+.PHONY: all $(LIBRARY_FOLDER) thin sim sim-thin
 
 all: normal-archive $(TARGET) 
 thin: thin-archive $(TARGET)
+sim: normal-archive simulate-normal
+sim-thin: thin-archive simulate-thin
 
 normal-archive: $(LIBRARY_FOLDER)
 	$(MAKE) -C $(LIBRARY_FOLDER) all
@@ -31,7 +33,10 @@ $(TARGET): $(TARGET_NO_WRAP)
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
-sim: $(TARGET)
+simulate-normal: $(TARGET)
+	$(SANCUS_SIM) $(SIMFLAGS) $<
+
+simulate-thin: $(TARGET)
 	$(SANCUS_SIM) $(SIMFLAGS) $<
 
 clean:
