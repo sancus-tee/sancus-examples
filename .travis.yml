@@ -23,6 +23,7 @@ env:
   - TARGET=hello-world   SECURITY=64
   - TARGET=hello-world   SECURITY=128
   - TARGET=hello-library SECURITY=64
+  - TARGET=hello-library SECURITY=64 ARCHIVE_MODE=thin
   - TARGET=sensor-reader SECURITY=64
   - TARGET=arithmetic    SECURITY=64
   - TARGET=fileio        SECURITY=64

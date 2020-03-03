@@ -7,22 +7,29 @@ OBJECTS         = $(SOURCES:.c=.o)
 TARGET          = main.elf
 TARGET_NO_WRAP  = no_wrap_$(TARGET)
 
+# This specifies how the library is built. A non defined ARCHIVE_MODE specifies normal mode, anything else specifies thin mode
+ifeq ($(ARCHIVE_MODE), )
+	ARCHIVE_MODE = thick
+	LIB_MODE = all
+	MODE_NAME = "normal, thick archive"
+else
+	ARCHIVE_MODE = thin
+	LIB_MODE = thin
+	MODE_NAME = "thin archive"
+endif
+
 # We need to give the full path of the library so that the linker can detect
 LDFLAGS += -L$(LIBRARY_FOLDER) -l:$(CURDIR)/$(LIBRARY_FOLDER)/$(LIBRARY_FILENAME) --scan-libraries-for-sm 
 CFLAGS  += -I$(LIBRARY_FOLDER) 
 
-.PHONY: all $(LIBRARY_FOLDER) thin sim sim-thin
+.PHONY: all $(LIBRARY_FOLDER) sim 
 
-all: normal-archive $(TARGET) 
-thin: thin-archive $(TARGET)
-sim: normal-archive simulate-normal
-sim-thin: thin-archive simulate-thin
+all: archive $(TARGET) 
+sim: archive run-simulation
 
-normal-archive: $(LIBRARY_FOLDER)
-	$(MAKE) -C $(LIBRARY_FOLDER) all
-
-thin-archive: $(LIBRARY_FOLDER)
-	$(MAKE) -C $(LIBRARY_FOLDER) thin
+archive: $(LIBRARY_FOLDER)
+	@echo "Building library as a $(MODE_NAME)"
+	$(MAKE) -C $(LIBRARY_FOLDER) $(LIB_MODE)
 
 $(TARGET_NO_WRAP): $(OBJECTS)
 	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
@@ -33,10 +40,7 @@ $(TARGET): $(TARGET_NO_WRAP)
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
-simulate-normal: $(TARGET)
-	$(SANCUS_SIM) $(SIMFLAGS) $<
-
-simulate-thin: $(TARGET)
+run-simulation: $(TARGET)
 	$(SANCUS_SIM) $(SIMFLAGS) $<
 
 clean:
