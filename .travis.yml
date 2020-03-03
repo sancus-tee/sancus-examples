@@ -14,7 +14,7 @@ before_install:
   - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
 
 script:
-  - docker run --name sancus-ci-run -it sancus-devel
+  - docker run --name sancus-ci-run -d -t sancus-devel
   - >
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]; 
     then 
