@@ -19,13 +19,13 @@ script:
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]; 
     then 
     docker exec sancus-ci-run /bin/sh -c 
-    "cd /sancus/sancus-examples &&                          \
-    ln -s /sancus/sancus-examples /travis_sancus-example && \
+    "cd /sancus/sancus-examples &&
+    ln -s /sancus/sancus-examples /travis_sancus-example &&
     git checkout $TRAVIS_BRANCH"; 
     else 
     docker exec sancus-ci-run /bin/sh -c	
-    "git clone https://github.com/${TRAVIS_PULL_REQUEST_SLUG} /sancus-examples-pr &&  \
-    cd /sancus-examples-pr && ln -s /sancus-examples-pr /travis_sancus-example &&     \
+    "git clone https://github.com/${TRAVIS_PULL_REQUEST_SLUG} /sancus-examples-pr &&
+    cd /sancus-examples-pr && ln -s /sancus-examples-pr /travis_sancus-example &&
     git checkout $TRAVIS_PULL_REQUEST_SHA";
     fi
   - docker exec sancus-ci-run /bin/sh -c "cd /travis_sancus-example && make SANCUS_SECURITY=$SECURITY ARCHIVE_MODE=$ARCHIVE_MODE $TARGET.sim"
