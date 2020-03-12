@@ -4,9 +4,10 @@
 #include <sancus_support/sm_io.h>
 #include <sancus_support/sancus_step.h>
 
-#define MAX_COUNTER (0xf)
+#define DELAY_BEFORE_SM 30
+#define INSTRUCTION_NUMBER_JMP 36
 
-int instrAfterCtr = 0;
+int instruction_counter = 0;
 uint16_t **dma_addr      = (uint16_t**) 0x0070;
 uint16_t *dma_countdown = (uint16_t*) 0x0072;
 uint16_t *dma_trace     = (uint16_t*) 0x0074;
@@ -34,30 +35,26 @@ void SM_ENTRY(foo) test(char key) {
 }
 
 /*
- * For the JMP 2f instruction, the program memory trace will be 0000111111000000
- * For the NOP    instruction, the program memory trace will be 0000111110000000
+ * For the JMP 2f instruction, the program memory trace will be 00001111 11000000
+ * For the NOP    instruction, the program memory trace will be 00001111 10000000
  *
  * By checking the different bit at the 0x40 position, we can tell which branch
  * was taken (the JPM is executed if the guess was incorrect, after the
  * bit is set).
- *
- * Both the +30 for the delay and the 36 for the instruction value are
- * determined empirically.
  */
 
 void irqHandler(void)
 {
-    delay = __ss_isr_reti_latency + 30;
+    delay = __ss_isr_reti_latency + DELAY_BEFORE_SM;
     uint16_t *pmem_addr = (uint16_t*) irqHandler;
-    pr_info1("%x\n", *dma_trace);
-    if (instrAfterCtr == 36) {
+    if (instruction_counter == INSTRUCTION_NUMBER_JMP) {
         if (*dma_trace & 0x40) {
             pr_info("Key was not guessed!");
         } else {
             pr_info("Key was guessed!");
         }
     }
-    ++instrAfterCtr;
+    ++instruction_counter;
     *dma_addr = pmem_addr;
     *dma_countdown = delay;
 }
@@ -70,7 +67,7 @@ int main()
 
     __ss_start();
     test(0x41);
-    instrAfterCtr = 0;
+    instruction_counter = 0;
     __ss_start();
     test(0x42);
 
