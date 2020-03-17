@@ -8,9 +8,9 @@
 #define INSTRUCTION_NUMBER_JMP 36
 
 int instruction_counter = 0;
-uint16_t **dma_addr      = (uint16_t**) 0x0070;
-uint16_t *dma_countdown = (uint16_t*) 0x0072;
-uint16_t *dma_trace     = (uint16_t*) 0x0074;
+uint16_t **dma_addr     = (uint16_t**) 0x0070;
+uint16_t *dma_countdown = (uint16_t*)  0x0072;
+uint16_t *dma_trace     = (uint16_t*)  0x0074;
 uint16_t delay = 0;
 
 DECLARE_SM(foo, 0x1234);
