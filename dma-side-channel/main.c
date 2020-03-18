@@ -35,8 +35,8 @@ void SM_ENTRY(foo) test(char key) {
 }
 
 /*
- * For the JMP 2f instruction, the program memory trace will be 00001111 11000000
- * For the NOP    instruction, the program memory trace will be 00001111 10000000
+ * For the JMP 2f instruction, the program memory trace will be 00011111 10000000
+ * For the NOP    instruction, the program memory trace will be 00011111 00000000
  *
  * By checking the different bit at the 0x40 position, we can tell which branch
  * was taken (the JPM is executed if the guess was incorrect, after the
@@ -48,7 +48,7 @@ void irqHandler(void)
     delay = __ss_isr_reti_latency + DELAY_BEFORE_SM;
     uint16_t *pmem_addr = (uint16_t*) irqHandler;
     if (instruction_counter == INSTRUCTION_NUMBER_JMP) {
-        if (*dma_trace & 0x40) {
+        if (*dma_trace & 0x80) {
             pr_info("Key was not guessed!");
         } else {
             pr_info("Key was guessed!");
