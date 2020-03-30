@@ -39,13 +39,11 @@ void SM_ENTRY(foo) test(char key) {
  *
  * Using TRACE_MASK to get the bit that differs in the two possible traces, we
  * can tell whether a collected trace was generated as a result of a correct or
- *  an incorrect guess.
+ * an incorrect guess.
  */
 
 void irqHandler(void)
 {
-    __ss_set_dma_attacker_delay(0);
-    uint16_t *pmem_addr = (uint16_t*) irqHandler;
     if (instruction_counter == INSTRUCTION_NUMBER_JMP) {
         if (DMA_TRACE & TRACE_MASK) {
             pr_info("Key was not guessed!");
@@ -54,8 +52,9 @@ void irqHandler(void)
         }
     }
     ++instruction_counter;
+    __ss_set_dma_attacker_delay(0);
+    uint16_t *pmem_addr = (uint16_t*) irqHandler;
     DMA_ADDR = pmem_addr;
-    DMA_COUNTDOWN = delay;
 }
 
 int main()
