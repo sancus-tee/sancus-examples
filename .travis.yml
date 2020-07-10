@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 
 notifications:
-  email: true
+  email: false
 
 services:
   - docker
