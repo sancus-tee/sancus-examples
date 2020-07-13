@@ -16,7 +16,7 @@ int main()
     {
         if (fileio_available())
         {
-            (c = fileio_getc());
+            fileio_putc((c = fileio_getc()));
             pr_info1("dumped '%#1x' on fileio_out\n", c);
             ASSERT(c == s[i]);
         }

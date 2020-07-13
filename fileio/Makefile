@@ -6,6 +6,8 @@ OBJECTS         = $(SOURCES:.c=.o)
 TARGET          = main.elf
 TARGET_NO_MAC   = no_mac_$(TARGET)
 
+SIMFLAGS       += --fileio-in sim-input.bin --fileio-out sim-output.bin
+
 TEST_DATA       = "hello"
 CFLAGS         += -DTEST_DATA=\"$(TEST_DATA)\"
 
