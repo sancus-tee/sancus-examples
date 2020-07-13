@@ -5,12 +5,13 @@ import subprocess
 
 me = sys.argv[0]
 
-if (len(sys.argv) != 3):
-    print('Usage: {} sm_key in_file'.format(me))
+if (len(sys.argv) != 4):
+    print('Usage: {} crypto sm_key in_file'.format(me))
     sys.exit(1)
 
-sm_key  = sys.argv[1]
-sim_out = sys.argv[2]
+crypto  = sys.argv[1]
+sm_key  = sys.argv[2]
+sim_out = sys.argv[3]
 
 def run_command(cmd):
     print('{}: {}'.format(me, ' '.join(cmd)))
@@ -36,7 +37,7 @@ with open(sim_out) as f:
             tag = match.group(1)
             continue
 
-cmd = ['sancus-crypto', '--unwrap', ad, cipher, tag, '--key', sm_key]
+cmd = [crypto, '--unwrap', ad, cipher, tag, '--key', sm_key]
 (rv, out) = run_command(cmd)
 
 if (not rv):

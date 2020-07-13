@@ -6,5 +6,6 @@
 extern struct SancusModule foo;
 
 int SM_ENTRY(foo) enter_foo(int i);
+int SM_ENTRY(foo) foo_mul(int a, int b, int c);
 
 #endif

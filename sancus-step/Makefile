@@ -9,7 +9,7 @@ TARGET_NO_MAC   = no_mac_$(TARGET)
 all: $(TARGET)
 
 $(TARGET_NO_MAC): $(OBJECTS)
-	$(LD) $(LDFLAGS) -lsancus-step  -o $@ $^
+	$(LD) $^ $(LDFLAGS) -lsancus-step -o $@
 
 $(TARGET): $(TARGET_NO_MAC)
 	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
@@ -24,3 +24,5 @@ clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd
+	$(RM) *.ll
+	$(RM) *.s

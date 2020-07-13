@@ -1,6 +1,13 @@
 include ../Makefile.include # Examples include
 include ./Makefile.include  # Library project include
 
+ifdef SLLVM_INSTALL_DIR
+sim: 
+clean:
+else
+  LDFLAGS += --prepare-for-sm-text-section-wrapping
+  LDFLAGS += --scan-libraries-for-sm 
+
 SOURCES         = $(shell ls *.c)
 OBJECTS         = $(SOURCES:.c=.o)
 
@@ -19,7 +26,7 @@ else
 endif
 
 # We need to give the full path of the library so that the linker can detect
-LDFLAGS += -L$(LIBRARY_FOLDER) -l:$(CURDIR)/$(LIBRARY_FOLDER)/$(LIBRARY_FILENAME) --scan-libraries-for-sm 
+LDFLAGS += -L$(LIBRARY_FOLDER) -l:$(CURDIR)/$(LIBRARY_FOLDER)/$(LIBRARY_FILENAME)
 CFLAGS  += -I$(LIBRARY_FOLDER) 
 
 .PHONY: all $(LIBRARY_FOLDER) sim 
@@ -32,12 +39,12 @@ archive: $(LIBRARY_FOLDER)
 	$(MAKE) -C $(LIBRARY_FOLDER) $(LIB_MODE)
 
 $(TARGET_NO_WRAP): $(OBJECTS)
-	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^
 
 $(TARGET): $(TARGET_NO_WRAP)
 	$(SANCUS_CRYPTO) --wrap-sm-text-sections $(CRYPTOFLAGS) -o $@ $<
 
-load: $(TARGET)
+load: thin-archive $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
 run-simulation: $(TARGET)
@@ -48,3 +55,4 @@ clean:
 	$(MAKE) -C $(LIBRARY_FOLDER) clean
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd
+endif

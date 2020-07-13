@@ -5,6 +5,12 @@
 
 #define MAX_COUNTER (0xf)
 
+#if __clang_major__ >= 5
+asm(".section __interrupt_vector_10,\"ax\",@progbits \n\t"
+    ".word timerA_isr_entry2                         \n\t");
+#endif
+
+
 int counter = 0x0;
 int oldCounterValue = 0x0;
 int instrAfterCtr = 0;

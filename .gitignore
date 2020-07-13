@@ -6,3 +6,5 @@
 *.fst
 *.fst.*
 *.out
+*.ll
+*.s

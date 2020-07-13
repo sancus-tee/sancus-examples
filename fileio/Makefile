@@ -12,7 +12,7 @@ CFLAGS         += -DTEST_DATA=\"$(TEST_DATA)\"
 all: $(TARGET)
 
 $(TARGET_NO_MAC): $(OBJECTS)
-	$(LD) $(LDFLAGS) -ldev-fileio -o $@ $^
+	$(LD) $^ $(LDFLAGS) -ldev-fileio -o $@
 
 $(TARGET): $(TARGET_NO_MAC)
 	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
@@ -28,5 +28,7 @@ sim: $(TARGET)
 
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
-	rm -f sim-input.bin sim-output.bin
-	rm -f *.fst *.vcd
+	$(RM) sim-input.bin sim-output.bin
+	$(RM) *.fst *.vcd
+	$(RM) *.ll
+	$(RM) *.s
