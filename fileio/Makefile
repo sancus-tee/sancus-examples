@@ -1,32 +1,27 @@
 include ../Makefile.include
 
-SOURCES         = $(shell ls *.c)
-OBJECTS         = $(SOURCES:.c=.o)
+SIMFLAGS       += --fileio-in sim-input.bin --fileio-out sim-output.bin
 
-TARGET          = main.elf
-TARGET_NO_MAC   = no_mac_$(TARGET)
+all: ping.elf pong.elf
 
-TEST_DATA       = "hello"
-CFLAGS         += -DTEST_DATA=\"$(TEST_DATA)\"
-
-all: $(TARGET)
-
-$(TARGET_NO_MAC): $(OBJECTS)
+no_mac_%.elf: %.o
 	$(LD) $(LDFLAGS) -ldev-fileio -o $@ $^
 
-$(TARGET): $(TARGET_NO_MAC)
+%.elf: no_mac_%.elf
 	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
 
 load: $(TARGET)
 	@echo "error: fileio peripheral only supported in simulator.."
 
-sim: $(TARGET)
+sim: ping.elf pong.elf
 	@rm -f sim-input.bin sim-output.bin
-	@echo -n $(TEST_DATA) > sim-input.bin
-	$(SANCUS_SIM) $(SIMFLAGS) $<
-	@echo -n "sim output is: '" ; cat sim-output.bin ; echo "'"
+	@touch sim-input.bin sim-output.bin
+	$(SANCUS_SIM) $(SIMFLAGS) --fileio-in sim-output.bin --fileio-out sim-input.bin pong.elf &
+	$(SANCUS_SIM) $(SIMFLAGS) --fileio-in sim-input.bin --fileio-out sim-output.bin ping.elf
+	@echo -n "ping output is: '" ; cat sim-output.bin ; echo "'"
+	@echo -n "pong output is: '" ; cat sim-input.bin ; echo "'"
 
 clean:
-	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
+	$(RM) *.elf
 	rm -f sim-input.bin sim-output.bin
 	rm -f *.fst *.vcd

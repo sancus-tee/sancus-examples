@@ -28,7 +28,7 @@ script:
     cd /sancus-examples-pr && ln -s /sancus-examples-pr /travis_sancus-example &&
     git checkout $TRAVIS_PULL_REQUEST_SHA";
     fi
-  - docker exec sancus-ci-run /bin/sh -c "cd /travis_sancus-example && make SANCUS_SECURITY=$SECURITY ARCHIVE_MODE=$ARCHIVE_MODE $TARGET.sim"
+  - docker exec sancus-ci-run /bin/sh -c "cd /travis_sancus-example && make SANCUS_SECURITY=$SECURITY ARCHIVE_MODE=$ARCHIVE_MODE TRAVIS=1 $TARGET.sim"
   - docker ps -a
 
 env:

@@ -9,6 +9,8 @@
 #define TRACE_MASK 0x1000
 int instruction_counter = 0;
 uint16_t delay = 0;
+uint16_t dma_trace[2] = {0};
+uint16_t dma_trace_idx = 0;
 
 DECLARE_SM(foo, 0x1234);
 
@@ -44,12 +46,9 @@ void SM_ENTRY(foo) test(char key) {
 
 void irqHandler(void)
 {
-    if (instruction_counter == INSTRUCTION_NUMBER_JMP) {
-        if (DMA_TRACE & TRACE_MASK) {
-            pr_info("Key was not guessed!");
-        } else {
-            pr_info("Key was guessed!");
-        }
+    if (instruction_counter == INSTRUCTION_NUMBER_JMP)
+    {
+        dma_trace[dma_trace_idx++] = DMA_TRACE;
     }
     ++instruction_counter;
     __ss_set_dma_attacker_delay(0);
@@ -65,10 +64,16 @@ int main()
 
     __ss_start();
     test(0x41);
+    pr_info1("DMA_TRACE for wrong guess   = %#x\n", dma_trace[0]);
+
     instruction_counter = 0;
     __ss_start();
     test(0x42);
+    pr_info1("DMA_TRACE for correct guess = %#x\n", dma_trace[1]);
 
+    ASSERT(dma_trace_idx == 2);
+    ASSERT( (dma_trace[0] & TRACE_MASK));
+    ASSERT(!(dma_trace[1] & TRACE_MASK));
     EXIT();
 }
 
