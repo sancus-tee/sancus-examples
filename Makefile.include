@@ -12,7 +12,7 @@ ifndef SLLVM_INSTALL_DIR
   CC            = sancus-cc
   LD            = sancus-ld
   SANCUS_CRYPTO = sancus-crypto
-  SANCUS_SIM    = sancus-sim
+  SANCUS_SIM    = sancus-isim
 else
   SANCUS_DIR    = $(SLLVM_INSTALL_DIR)
   CC            = $(SLLVM_INSTALL_DIR)/bin/clang
