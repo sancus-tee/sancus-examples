@@ -12,7 +12,7 @@ ifndef SLLVM_INSTALL_DIR
   CC            = sancus-cc
   LD            = sancus-ld
   SANCUS_CRYPTO = sancus-crypto
-  SANCUS_SIM    = sancus-isim
+  SANCUS_SIM    = sancus-sim
 else
   SANCUS_DIR    = $(SLLVM_INSTALL_DIR)
   CC            = $(SLLVM_INSTALL_DIR)/bin/clang
@@ -42,7 +42,6 @@ ROM_SIZE    = 41K
 FPGA_DEV    = /dev/ttyUSB0
 FPGA_RATE   = 115200
 VENDOR_KEY  = $(shell $(SANCUS_CRYPTO) --key $(SANCUS_KEY) --gen-vendor-key $(VENDOR_ID) | xxd -p)
-MEMFLAGS    = --ram $(RAM_SIZE) --rom $(ROM_SIZE) 
 
 CFLAGS =
 CFLAGS += -Wfatal-errors 
@@ -62,7 +61,6 @@ ifndef SLLVM_INSTALL_DIR
     CFLAGS += -DQUIET
   endif
   
-  LDFLAGS += $(MEMFLAGS)
   LDFLAGS += --inline-arithmetic
   LDFLAGS += --standalone
   LDFLAGS += --verbose
@@ -108,7 +106,6 @@ else
 endif
 
 SIMFLAGS = 
-SIMFLAGS += $(MEMFLAGS)
 
 CRYPTOFLAGS =
 CRYPTOFLAGS += --key $(VENDOR_KEY)
