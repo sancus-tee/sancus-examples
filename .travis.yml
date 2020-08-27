@@ -27,10 +27,19 @@ script:
   - docker exec sancus-ci-run /bin/sh -c "cd /travis_sancus-example && make SANCUS_SECURITY=$SECURITY ARCHIVE_MODE=$ARCHIVE_MODE TRAVIS=1 $TARGET.sim"
   - docker ps -a
 
+env:
+    - SECURITY=64
+    - SECURITY=128
+
+stages:
+    - build
+    - test
+
 jobs:
   include:
-    - name: "Build and push Docker images"
-      stage: "Build Sancus simulator"
+    - stage: build
+      name: "Build and push Sancus simulator Docker images"
+      env: SECURITY=64
       script:
           - git clone https://github.com/sancus-pma/sancus-main.git
           - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
@@ -38,10 +47,11 @@ jobs:
           - docker images
           - docker tag sancus-devel $DOCKER_USERNAME/sancus-devel-$SECURITY
           - docker push $DOCKER_USERNAME/sancus-devel-$SECURITY
-      env:
-          - SECURITY=64
-          - SECURITY=128
-    - stage: "Run Sancus example applications"
+
+          - docker push $DOCKER_USERNAME/sancus-devel-$SECURITY
+
+    - stage: test
+      name: "Run Sancus example applications"
       env: TARGET=hello-world   SECURITY=64
     - env: TARGET=hello-world   SECURITY=128
     - env: TARGET=hello-library SECURITY=64
