@@ -9,6 +9,10 @@ services:
 
 language: c
 
+env:
+  - SECURITY=64
+  - SECURITY=128
+
 script:
   - docker run --name sancus-ci-run -d -t $DOCKER_USERNAME/sancus-devel
   - >
