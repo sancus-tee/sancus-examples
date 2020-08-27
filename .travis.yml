@@ -39,9 +39,9 @@ jobs:
   include:
     - stage: "Build and push Sancus simulator Docker images"
       env: SECURITY=64
-      script:
+      script: skip
     - env: SECURITY=128
-      script:
+      script: skip
     - stage: "Run Sancus example applications"
       env: TARGET=hello-world   SECURITY=64
       install: skip
