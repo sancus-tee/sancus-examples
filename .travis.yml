@@ -9,12 +9,8 @@ services:
 
 language: c
 
-before_install:
-  - git clone https://github.com/sancus-pma/sancus-main.git
-  - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
-
 script:
-  - docker run --name sancus-ci-run -d -t sancus-devel
+  - docker run --name sancus-ci-run -d -t $DOCKER_USERNAME/sancus-devel
   - >
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]; 
     then 
@@ -31,15 +27,26 @@ script:
   - docker exec sancus-ci-run /bin/sh -c "cd /travis_sancus-example && make SANCUS_SECURITY=$SECURITY ARCHIVE_MODE=$ARCHIVE_MODE TRAVIS=1 $TARGET.sim"
   - docker ps -a
 
-env:
-  - TARGET=hello-world   SECURITY=64
-  - TARGET=hello-world   SECURITY=128
-  - TARGET=hello-library SECURITY=64
-  - TARGET=hello-library SECURITY=64 ARCHIVE_MODE=thin
-  - TARGET=sensor-reader SECURITY=64
-  - TARGET=arithmetic    SECURITY=64
-  - TARGET=fileio        SECURITY=64
-  - TARGET=timer         SECURITY=64
-  - TARGET=violation     SECURITY=64
-  - TARGET=sancus-step   SECURITY=64
-  - TARGET=dma           SECURITY=64
+jobs:
+  include:
+    - name: "Build and push Docker image"
+      stage: "Build Sancus simulator"
+      script:
+          - git clone https://github.com/sancus-pma/sancus-main.git
+          - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
+          - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          - docker images
+          - docker tag sancus-devel $DOCKER_USERNAME/sancus-devel
+          - docker push $DOCKER_USERNAME/sancus-devel
+    - stage: "Run Sancus example applications"
+      env: TARGET=hello-world   SECURITY=64
+    - env: TARGET=hello-world   SECURITY=128
+    - env: TARGET=hello-library SECURITY=64
+    - env: TARGET=hello-library SECURITY=64 ARCHIVE_MODE=thin
+    - env: TARGET=sensor-reader SECURITY=64
+    - env: TARGET=arithmetic    SECURITY=64
+    - env: TARGET=fileio        SECURITY=64
+    - env: TARGET=timer         SECURITY=64
+    - env: TARGET=violation     SECURITY=64
+    - env: TARGET=sancus-step   SECURITY=64
+    - env: TARGET=dma           SECURITY=64
