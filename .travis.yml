@@ -9,12 +9,8 @@ services:
 
 language: c
 
-env:
-  - SECURITY=64
-  - SECURITY=128
-
 script:
-  - docker run --name sancus-ci-run -d -t $DOCKER_USERNAME/sancus-devel
+  - docker run --name sancus-ci-run -d -t $DOCKER_USERNAME/sancus-devel-$SECURITY
   - >
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]; 
     then 
@@ -33,15 +29,18 @@ script:
 
 jobs:
   include:
-    - name: "Build and push Docker image"
+    - name: "Build and push Docker images"
       stage: "Build Sancus simulator"
       script:
           - git clone https://github.com/sancus-pma/sancus-main.git
           - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
           - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           - docker images
-          - docker tag sancus-devel $DOCKER_USERNAME/sancus-devel
-          - docker push $DOCKER_USERNAME/sancus-devel
+          - docker tag sancus-devel $DOCKER_USERNAME/sancus-devel-$SECURITY
+          - docker push $DOCKER_USERNAME/sancus-devel-$SECURITY
+      env:
+          - SECURITY=64
+          - SECURITY=128
     - stage: "Run Sancus example applications"
       env: TARGET=hello-world   SECURITY=64
     - env: TARGET=hello-world   SECURITY=128
