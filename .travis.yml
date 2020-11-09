@@ -9,10 +9,12 @@ services:
 
 language: c
 
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
 install:
   - git clone https://github.com/sancus-pma/sancus-main.git
   - cd sancus-main/docker && make build SANCUS_SECURITY=$SECURITY 
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker images
   - docker tag sancus-devel $DOCKER_USERNAME/sancus-devel-$SECURITY
   - docker push $DOCKER_USERNAME/sancus-devel-$SECURITY
