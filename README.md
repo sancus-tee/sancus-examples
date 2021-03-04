@@ -1,5 +1,5 @@
 # sancus-examples
-[![Build Status](https://travis-ci.org/sancus-tee/sancus-examples.svg?branch=master)](https://travis-ci.org/sancus-tee/sancus-examples)
+[![Run Sancus examples](https://github.com/sancus-tee/sancus-examples/actions/workflows/run-examples.yml/badge.svg)](https://github.com/sancus-tee/sancus-examples/actions/workflows/run-examples.yml)
 
 Elementary example programs to test your Sancus distribution.
 
