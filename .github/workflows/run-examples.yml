@@ -16,6 +16,7 @@ on:
 jobs:
   test-examples:
     name: Test of all examples
+    runs-on: ubuntu-latest
     container:
       image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:merge
       credentials:
@@ -51,6 +52,7 @@ jobs:
 
   test-64-bit:
     name: Test of 128 bit security
+    runs-on: ubuntu-latest
     container:
       image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:merge
       credentials:
