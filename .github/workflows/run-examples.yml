@@ -52,7 +52,7 @@ jobs:
       
       # Run example in Docker
       - name: Run 64-bit ${{ matrix.example }} example in Docker	    
-        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:merge
+        uses: docker://docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:merge
         with:
           entrypoint: /bin/bash
           args: -c "cd /github/workspace/ && make SANCUS_SECURITY=64 CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim"
@@ -74,7 +74,7 @@ jobs:
       # Unfortunately, the uses parameter can not be modified via a matrix, 
       #   and placing security in the matrix does not work.
       - name: Run {{ matrix.security }}-bit example in Docker	    
-        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:merge
+        uses: docker://docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:merge
         with:
           entrypoint: /bin/bash
           args: -c "cd /github/workspace/ && make SANCUS_SECURITY=128 CI=1 hello-world.sim"
