@@ -15,43 +15,30 @@ on:
 
 jobs:
   test-examples:
-    name: Hello world example with ${{ matrix.security }} bit security
+    name: Test of all examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - security: 64
-            example: hello-world
+          - example: hello-world
             flags: 
-          - security: 128
-            example: hello-world
-            flags: 
-          - security: 64
-            example: hello-library
+          - example: hello-library
             flags: ARCHIVE_MODE=thick 
-          - security: 64
-            example: hello-library
+          - example: hello-library
             flags: ARCHIVE_MODE=thin
-          - security: 64
-            example: sensor-reader
+          - example: sensor-reader
             flags: 
-          - security: 64
-            example: arithmetic
+          - example: arithmetic
             flags: 
-          - security: 64
-            example: fileio
+          - example: fileio
             flags: 
-          - security: 64
-            example: timer
+          - example: timer
             flags: 
-          - security: 64
-            example: violation
+          - example: violation
             flags: 
-          - security: 64
-            example: sancus-step
+          - example: sancus-step
             flags: 
-          - security: 64
-            example: dma
+          - example: dma
             flags: 
 
     steps:
@@ -64,8 +51,30 @@ jobs:
         uses: actions/checkout@v2
       
       # Run example in Docker
-      - name: Run {{ matrix.security }}-bit example in Docker	    
-        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.security }}:merge
+      - name: Run 64-bit ${{ matrix.example }} example in Docker	    
+        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:merge
         with:
           entrypoint: /bin/bash
-          args: -c "cd /github/workspace/ && make SANCUS_SECURITY=${{ matrix.security }} CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim"
+          args: -c "cd /github/workspace/ && make SANCUS_SECURITY=64 CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim"
+
+  test-64-bit:
+    name: Test of 128 bit security
+    runs-on: ubuntu-latest
+
+    steps:
+      # Log in to gh pkg for docker
+      - name: Log into Docker registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      
+      # Check out repo (with PR). Will be mounted in Docker under /github/workflows
+      - name: Check out repository
+        uses: actions/checkout@v2
+      
+      # Run example in Docker but choose 128 bit and hello world example here
+      # Unfortunately, the uses parameter can not be modified via a matrix, 
+      #   and placing security in the matrix does not work.
+      - name: Run {{ matrix.security }}-bit example in Docker	    
+        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:merge
+        with:
+          entrypoint: /bin/bash
+          args: -c "cd /github/workspace/ && make SANCUS_SECURITY=128 CI=1 hello-world.sim"
