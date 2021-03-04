@@ -15,10 +15,10 @@ on:
 
 jobs:
   test-examples:
-    name: Test of all examples
+    name: Test of ${{ matrix.example }} example
     runs-on: ubuntu-latest
     container:
-      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:merge
+      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -48,17 +48,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        name: Pull repository
       - run: make SANCUS_SECURITY=64 CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim
+        name: Build and run ${{ matrix.example }}
 
   test-64-bit:
     name: Test of 128 bit security
     runs-on: ubuntu-latest
     container:
-      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:merge
+      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
           
     steps:
       - uses: actions/checkout@v2
-      - run: make SANCUS_SECURITY=128 CI=1 hello-world.sim"
+        name: Pull repository
+      - run: make SANCUS_SECURITY=128 CI=1 hello-world.sim
+        name: Build and run hello world @ 128 bit security
