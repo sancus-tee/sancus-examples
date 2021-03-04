@@ -14,18 +14,24 @@ on:
     - cron: '0 0 1 */1 *'
 
 jobs:
-  hello-world:
+  test-examples:
     name: Hello world example with ${{ matrix.security }} bit security
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - security: [64, 128]
+          - security: 64
+            example: hello-world
+            flags: 
+          - security: 128
             example: hello-world
             flags: 
           - security: 64
             example: hello-library
-            flags: ["ARCHIVE_MODE=thick", "ARCHIVE_MODE=thin"]
+            flags: ARCHIVE_MODE=thick 
+          - security: 64
+            example: hello-library
+            flags: ARCHIVE_MODE=thin
           - security: 64
             example: sensor-reader
             flags: 
