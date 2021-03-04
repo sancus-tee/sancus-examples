@@ -1,0 +1,65 @@
+# This is the ci workflow to run after the docker push
+
+name: Run Sancus examples
+
+on:
+  # Run on pushes to master
+  push:
+    branches:
+      - master
+  # Run on pull requests (automatically uses PR in docker name)
+  pull_request:
+  # Also run on a schedule (once a month)
+  schedule:
+    - cron: '0 0 1 */1 *'
+
+jobs:
+  hello-world:
+    name: Hello world example with ${{ matrix.security }} bit security
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - security: [64, 128]
+            example: hello-world
+            flags: 
+          - security: 64
+            example: hello-library
+            flags: ["ARCHIVE_MODE=thick", "ARCHIVE_MODE=thin"]
+          - security: 64
+            example: sensor-reader
+            flags: 
+          - security: 64
+            example: arithmetic
+            flags: 
+          - security: 64
+            example: fileio
+            flags: 
+          - security: 64
+            example: timer
+            flags: 
+          - security: 64
+            example: violation
+            flags: 
+          - security: 64
+            example: sancus-step
+            flags: 
+          - security: 64
+            example: dma
+            flags: 
+
+    steps:
+      # Log in to gh pkg for docker
+      - name: Log into Docker registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      
+      # Check out repo (with PR). Will be mounted in Docker under /github/workflows
+      - name: Check out repository
+        uses: actions/checkout@v2
+      
+      # Run example in Docker
+      - name: Run {{ matrix.security }}-bit example in Docker	    
+        uses: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.security }}:merge
+        with:
+          entrypoint: /bin/bash
+          args: -c "cd /github/workspace/ && make SANCUS_SECURITY=${{ matrix.security }} CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim"
