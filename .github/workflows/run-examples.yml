@@ -17,28 +17,25 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        sancus-security: [64,128]
+        flags: 
+        sancus-security: 64
         include:
           - example: hello-world
-            flags: 
+          - example: hello-world
+            sancus-security: 128
           - example: hello-library
             flags: ARCHIVE_MODE=thick 
           - example: hello-library
             flags: ARCHIVE_MODE=thin
           - example: sensor-reader
-            flags: 
+          - example: sensor-reader
+            sancus-security: 128
           - example: arithmetic
-            flags: 
           - example: fileio
-            flags: 
           - example: timer
-            flags: 
           - example: violation
-            flags: 
           - example: sancus-step
-            flags: 
           - example: dma
-            flags: 
 
     steps:
       - uses: actions/checkout@v2
