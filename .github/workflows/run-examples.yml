@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-examples:
-    name: Test of ${{ matrix.example }} example
+    name: Test ${{ matrix.example }} @ ${{ matrix.sancus-security}} bit security
     runs-on: ubuntu-latest
     container:
       image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.sancus-security }}:latest
@@ -17,43 +17,8 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        include:
-          - example: hello-world
-            flags: 
-            sancus-security: 64
-          - example: hello-world
-            flags: 
-            sancus-security: 128
-          - example: hello-library
-            flags: ARCHIVE_MODE=thick 
-            sancus-security: 64
-          - example: hello-library
-            flags: ARCHIVE_MODE=thin
-            sancus-security: 64
-          - example: sensor-reader
-            flags: 
-            sancus-security: 64
-          - example: sensor-reader
-            flags: 
-            sancus-security: 128
-          - example: arithmetic
-            flags: 
-            sancus-security: 64
-          - example: fileio
-            flags: 
-            sancus-security: 64
-          - example: timer
-            flags: 
-            sancus-security: 64
-          - example: violation
-            flags: 
-            sancus-security: 64
-          - example: sancus-step
-            flags: 
-            sancus-security: 64
-          - example: dma
-            flags: 
-            sancus-security: 64
+        example: [hello-world, sensor-reader]
+        sancus-security: [64, 128]
 
     steps:
       - uses: actions/checkout@v2
