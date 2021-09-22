@@ -1,7 +1,9 @@
 name: Run Sancus examples
 on:
   # only run on master cause we'll push a Docker image
-  push: master
+  push: 
+    branches:
+      - master
   # trigger a cron job every monday at 8am
   schedule:
     - cron: '00 08 * * MON'
