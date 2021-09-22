@@ -23,8 +23,10 @@ jobs:
         include:
           - example: hello-library
             flags: ARCHIVE_MODE=thick 
+            sancus-security: 64
           - example: hello-library
             flags: ARCHIVE_MODE=thin
+            sancus-security: 64
 
     steps:
       - uses: actions/checkout@v2
