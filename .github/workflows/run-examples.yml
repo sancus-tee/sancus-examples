@@ -17,8 +17,8 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        flags: 
-        sancus-security: 64
+        flags: []
+        sancus-security: [64]
         include:
           - example: hello-world
           - example: hello-world
