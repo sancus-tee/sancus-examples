@@ -1,0 +1,35 @@
+name: Run Sancus examples
+on:
+  push:
+  pull_request:
+  # trigger a cron job every monday at 8am
+  schedule:
+    - cron: '00 08 * * MON'
+
+jobs:
+  test-examples:
+    name: Test ${{ matrix.example }} (${{ matrix.sancus-security}}-bit security)
+    runs-on: ubuntu-latest
+    container:
+      # sancus-devel Docker container is regularly built and published in the sancus-main Action Workflow
+      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.sancus-security }}:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        example: [hello-world, sensor-reader, arithmetic, fileio, timer, violation, sancus-step, dma]
+        sancus-security: [64, 128]
+        include:
+          - example: hello-library
+            flags: ARCHIVE_MODE=thick 
+            sancus-security: 64
+          - example: hello-library
+            flags: ARCHIVE_MODE=thin
+            sancus-security: 64
+
+    steps:
+      - uses: actions/checkout@v2
+        name: Pull repository
+      - run: make SANCUS_SECURITY=${{ matrix.sancus-security }} CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim
+        name: Build and run ${{ matrix.example }} @ ${{ matrix.sancus-security}}-bit security
