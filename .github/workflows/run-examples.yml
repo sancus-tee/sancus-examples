@@ -1,29 +1,23 @@
-# This is the ci workflow to run after the docker push
-
 name: Run Sancus examples
-
 on:
-  # Run on pushes to master
   push:
-    branches:
-      - master
-  # Run on pull requests (automatically uses PR in docker name)
   pull_request:
-  # Also run on a schedule (once a month)
+  # trigger a cron job every monday at 8am
   schedule:
-    - cron: '0 0 1 */1 *'
+    - cron: '00 08 * * MON'
 
 jobs:
   test-examples:
     name: Test of ${{ matrix.example }} example
     runs-on: ubuntu-latest
     container:
-      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-64:latest
+      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.sancus-security }}:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
+        sancus-security: [64,128]
         include:
           - example: hello-world
             flags: 
@@ -49,20 +43,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Pull repository
-      - run: make SANCUS_SECURITY=64 CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim
-        name: Build and run ${{ matrix.example }}
-
-  test-64-bit:
-    name: Test of 128 bit security
-    runs-on: ubuntu-latest
-    container:
-      image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-128:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-          
-    steps:
-      - uses: actions/checkout@v2
-        name: Pull repository
-      - run: make SANCUS_SECURITY=128 CI=1 hello-world.sim
-        name: Build and run hello world @ 128 bit security
+      - run: make SANCUS_SECURITY=${{ matrix.sancus-security }} CI=1 ${{ matrix.flags }} ${{ matrix.example }}.sim
+        name: Build and run ${{ matrix.example }} @ ${{ matrix.sancus-security}} bit security
