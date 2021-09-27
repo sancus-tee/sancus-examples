@@ -11,7 +11,15 @@ int SM_FUNC(foo) foo_div( int i, unsigned int j)
 
 int SM_ENTRY(foo) enter_foo( int i )
 {
+    ASSERT(sancus_get_caller_id() == SM_ID_UNPROTECTED);
+    ASSERT(sancus_get_self_id() == 1);
+    ASSERT(sancus_get_id((void*) bar_lookup) == 2);
+
     int j, k = bar_lookup(i);
+    //TODO caller_id should remain 0 after merging Aion compiler changes
+    ASSERT(sancus_get_caller_id() == 2);
+    ASSERT(sancus_get_self_id() == 1);
+
     pr_info1("bar returned %d\n", k);
 
     j = foo_div(k, 5) % i;

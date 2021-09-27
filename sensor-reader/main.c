@@ -17,7 +17,9 @@ int main()
     pr_info("requesting sensor readings..");
     nonce_t no = 0xabcd;
     ReaderOutput out;
+    ASSERT(sancus_get_caller_id() == SM_ID_IRQ);
     get_readings(no, &out);
+    ASSERT(sancus_get_caller_id() == 2);
 
     pr_info("dumping sealed output from reader SM..");
     dump_buf((uint8_t*)&no, sizeof(no), "  Nonce");

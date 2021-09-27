@@ -22,6 +22,8 @@ void SM_FUNC(hello) hello_init(void)
 
 void SM_ENTRY(hello) hello_greet(void)
 {
+    ASSERT(sancus_get_caller_id() == SM_ID_UNPROTECTED);
+    ASSERT(sancus_get_self_id() == 1);
     hello_init();
     pr_info2("Hi from SM with ID %d, called by %d\n",
         sancus_get_self_id(), sancus_get_caller_id());
@@ -29,6 +31,8 @@ void SM_ENTRY(hello) hello_greet(void)
 
 void SM_ENTRY(hello) hello_disable(void)
 {
+    ASSERT(sancus_get_caller_id() == SM_ID_UNPROTECTED);
+    ASSERT(sancus_get_self_id() == 1);
     sancus_disable(exit_success);
 }
 
@@ -44,7 +48,9 @@ int main()
     sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
     pr_sm_info(&hello);
 
+    ASSERT(sancus_get_caller_id() == SM_ID_IRQ);
     hello_greet();
+    ASSERT(sancus_get_caller_id() == 1);
     hello_disable();
 
     // should never reach here
