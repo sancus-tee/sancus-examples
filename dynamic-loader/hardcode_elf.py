@@ -1,14 +1,10 @@
-import os
-
-# build sm1.elf
-os.system("sancus-cc -c -o sm1.o sm1.c")
-os.system("sancus-ld --inline-arithmetic -o sm1.elf sm1.o")
+#!/usr/bin/python3
 
 # read ELF
 with open("sm1.elf", "rb") as f:
     sm1 = f.read()
 
-# prepare string to hardcode: remove brackets
+# prepare string to hardcode: convert to byte array (without brackets)
 sm1_array = str(list(sm1))[1:-1]
 
 # read header template

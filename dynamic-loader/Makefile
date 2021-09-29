@@ -2,20 +2,29 @@ include ../Makefile.include
 
 SOURCES         = $(shell find *.c ! -name "sm1.c" -printf "%p ")
 OBJECTS         = $(SOURCES:.c=.o)
-SM1_HEADER      = $(shell python3 hardcode_elf.py)
 
 TARGET          = main.elf
-TARGET_NO_WRAP  = no_wrap_$(TARGET)
+TARGET_NO_MAC   = no_mac_$(TARGET)
 
-LDFLAGS += -lsm-control -lloader -ltools
+LDFLAGS        += -lsm-control -lloader -ltools
 
 all: $(TARGET)
 
-$(TARGET_NO_WRAP): $(SM1_HEADER) $(OBJECTS)
-	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
+sm1.elf: sm1.o
+	$(LD) --verbose -o $@ $<
+	# print undefined symbols
+	nm -u $<
 
-$(TARGET): $(TARGET_NO_WRAP)
-	$(SANCUS_CRYPTO) --wrap-sm-text-sections $(CRYPTOFLAGS) -o $@ $<
+sm1.h: hardcode_elf.py sm1.elf 
+	python3 $<
+	# dump generated header file
+	cat $@
+
+$(TARGET_NO_MAC): sm1.h $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+$(TARGET): $(TARGET_NO_MAC)
+	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
 
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
@@ -25,6 +34,6 @@ sim: $(TARGET)
 
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_WRAP) $(OBJECTS)
-	rm -f sim-input.bin sim-output.bin
-	rm -f *.fst *.vcd
-	rm -f sm1.h sm1.o sm1.elf
+	$(RM) sim-input.bin sim-output.bin
+	$(RM) *.fst *.vcd
+	$(RM) sm1.h sm1.o sm1.elf
