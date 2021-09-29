@@ -18,7 +18,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        example: [hello-world, sensor-reader, arithmetic, fileio, timer, violation, sancus-step, dma]
+        example: [hello-world, sensor-reader, arithmetic, fileio, timer, violation, sancus-step, dma, dynamic-loader]
         sancus-security: [64, 128]
         include:
           - example: hello-library
