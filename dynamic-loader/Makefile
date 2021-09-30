@@ -12,13 +12,13 @@ all: $(TARGET)
 
 sm1.elf: sm1.o
 	$(LD) --verbose -o $@ $<
-	# print undefined symbols
-	nm -u $<
+	# assert static symbol table contains all undefined symbols
+	for s in `nm -u $@ | awk '{print $$2}'`; do grep $$s static-symtab.c || exit 1; done
 
-sm1.h: hardcode_elf.py sm1.elf 
+sm1.h: hardcode_elf.py header_template.h sm1.elf 
 	python3 $<
 	# dump generated header file
-	cat $@
+	#cat $@
 
 $(TARGET_NO_MAC): sm1.h $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $^
