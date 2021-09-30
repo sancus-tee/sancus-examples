@@ -7,9 +7,20 @@ on:
     - cron: '00 08 * * MON'
 
 jobs:
+  matrix-gen:
+    name: Generate sancus-examples test directory matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{steps.list_dirs.outputs.matrix}}
+    steps:
+      - uses: actions/checkout@v2
+      - id: list_dirs
+        run: echo "::set-output name=matrix::$(ls -d */ | sed 's:/*$::' | jq -cnR '[inputs | select(length>0)]')"
+
   test-examples:
     name: Test ${{ matrix.example }} (${{ matrix.sancus-security}}-bit security)
     runs-on: ubuntu-latest
+    needs: matrix-gen
     container:
       # sancus-devel Docker container is regularly built and published in the sancus-main Action Workflow
       image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.sancus-security }}:latest
@@ -18,7 +29,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        example: [hello-world, sensor-reader, arithmetic, fileio, timer, violation, sancus-step, dma, dynamic-loader]
+        example: ${{fromJson(needs.matrix-gen.outputs.matrix)}}
         sancus-security: [64, 128]
         include:
           - example: hello-library
