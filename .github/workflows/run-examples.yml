@@ -7,9 +7,22 @@ on:
     - cron: '00 08 * * MON'
 
 jobs:
-  test-examples:
-    name: Test ${{ matrix.example }} (${{ matrix.sancus-security}}-bit security)
+  matrix-gen:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{steps.list_dirs.outputs.matrix}}
+    steps:
+      - uses: actions/checkout@v2
+      - id: list_dirs
+        run: |
+          MATRIX=$(ls -d */ | sed 's:/*$::' | jq -cnR '[inputs | select(length>0)]')
+          echo $MATRIX
+          echo "::set-output name=matrix::$MATRIX"
+
+  test-examples:
+    name: ${{ matrix.example }} on sancus-devel-${{ matrix.sancus-security}}
+    runs-on: ubuntu-latest
+    needs: matrix-gen
     container:
       # sancus-devel Docker container is regularly built and published in the sancus-main Action Workflow
       image: docker.pkg.github.com/sancus-tee/sancus-main/sancus-devel-${{ matrix.sancus-security }}:latest
@@ -18,16 +31,16 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
-        example: [hello-world, sensor-reader, arithmetic, fileio, timer, violation, sancus-step, dma, dynamic-loader]
+        example: ${{fromJson(needs.matrix-gen.outputs.matrix)}}
         sancus-security: [64, 128]
+        # use include
         include:
-          - example: hello-library
-            flags: ARCHIVE_MODE=thick 
-            sancus-security: 64
           - example: hello-library
             flags: ARCHIVE_MODE=thin
             sancus-security: 64
-
+          - example: hello-library
+            flags: ARCHIVE_MODE=thick
+            sancus-security: 128
     steps:
       - uses: actions/checkout@v2
         name: Pull repository
