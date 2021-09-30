@@ -8,14 +8,16 @@ on:
 
 jobs:
   matrix-gen:
-    name: Generate sancus-examples test directory matrix
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{steps.list_dirs.outputs.matrix}}
     steps:
       - uses: actions/checkout@v2
       - id: list_dirs
-        run: echo "::set-output name=matrix::$(ls -d */ | sed 's:/*$::' | jq -cnR '[inputs | select(length>0)]')"
+        run: |
+          MATRIX=$(ls -d */ | sed 's:/*$::' | jq -cnR '[inputs | select(length>0)]')
+          echo $MATRIX
+          echo "::set-output name=matrix::$MATRIX"
 
   test-examples:
     name: Test ${{ matrix.example }} (${{ matrix.sancus-security}}-bit security)
