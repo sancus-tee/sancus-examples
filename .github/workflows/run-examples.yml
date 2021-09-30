@@ -33,13 +33,14 @@ jobs:
       matrix:
         example: ${{fromJson(needs.matrix-gen.outputs.matrix)}}
         sancus-security: [64, 128]
+        # use include
         include:
-          - example: "hello-library"
-            flags: ARCHIVE_MODE=thick 
-            sancus-security: 64
-          - example: "hello-library"
+          - example: hello-library
             flags: ARCHIVE_MODE=thin
             sancus-security: 64
+          - example: hello-library
+            flags: ARCHIVE_MODE=thick
+            sancus-security: 128
     steps:
       - uses: actions/checkout@v2
         name: Pull repository
