@@ -29,6 +29,9 @@ int SM_FUNC(bar) bar_in_text( void *p )
 
 void SM_FUNC(bar) bar_assert(void)
 {
+    ASSERT(sancus_get_caller_id() == 1);
+    ASSERT(sancus_get_self_id() == 2);
+
     ASSERT( !bar_ispow2(sizeof(element_t)) );
     ASSERT( bar_in_text((void*) bar_table ));
     ASSERT( bar_in_text((void*) bar_table + BAR_TABLE_SIZE - 1) );

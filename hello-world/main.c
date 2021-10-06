@@ -33,7 +33,6 @@ int main()
     pr_sm_info(&hello);
 
     ASSERT(sancus_get_caller_id() == SM_ID_IRQ);
-
     hello_greet();
     ASSERT(sancus_get_caller_id() == 1);
     hello_disable();
