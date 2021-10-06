@@ -8,11 +8,23 @@ void exit_success(void);
 /* ======== HELLO WORLD SM ======== */
 
 DECLARE_SM(hello, 0x1234);
+#define HELLO_SECRET_CST    0xbeef
+
+int       SM_DATA(hello) hello_secret;
+int const SM_DATA(hello) hello_const = HELLO_SECRET_CST;
+
+void SM_FUNC(hello) hello_init(void)
+{
+    /* Confidential loading guarantees secrecy of constant in text section. */
+    hello_secret = hello_const;
+    ASSERT(hello_secret == HELLO_SECRET_CST);
+}
 
 void SM_ENTRY(hello) hello_greet(void)
 {
     ASSERT(sancus_get_caller_id() == SM_ID_UNPROTECTED);
     ASSERT(sancus_get_self_id() == 1);
+    hello_init();
     pr_info2("Hi from SM with ID %d, called by %d\n",
         sancus_get_self_id(), sancus_get_caller_id());
 }
@@ -25,14 +37,33 @@ void SM_ENTRY(hello) hello_disable(void)
 }
 
 /* ======== UNTRUSTED CONTEXT ======== */
+
+volatile int *hello_const_pt = (volatile int *) &hello_const;
+
 int main()
 {
     msp430_io_init();
+    ASSERT((*hello_const_pt) != HELLO_SECRET_CST);
 
-    sancus_enable(&hello);
+    sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
     pr_sm_info(&hello);
 
     ASSERT(sancus_get_caller_id() == SM_ID_IRQ);
+
+    puts("Checking dint\n");
+    asm("dint");
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    puts("Checking clix\n");
+    asm("mov #4, r15\n\t"
+        ".word 0x1389\n\t"
+        :
+        :
+        : "15");
+    asm("nop");
+    asm("nop");
+    asm("nop");
 
     hello_greet();
     ASSERT(sancus_get_caller_id() == 1);
@@ -47,7 +78,9 @@ void exit_success(void)
     // TODO unprotect instruction should also clear caller ID
     //ASSERT(!sancus_get_caller_id());
     ASSERT(!sancus_get_id(hello_greet));
+    ASSERT(!hello_secret);
+    ASSERT(!(*hello_const_pt));
 
-    pr_info("SM disabled; all done!\n\n");
+    pr_info("SM disabled; all done!");
     EXIT();
 }

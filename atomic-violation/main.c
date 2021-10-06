@@ -40,7 +40,7 @@ void SM_ENTRY(hello) hello_init(void)
 
 void SM_ENTRY(hello) hello_violation(void)
 {
-    pr_info("Second SM attempting to create violation..");
+    pr_info("Second SM attempting to create violation.. (we expect this to abort the simulator)");
     // Do another clix for 3 cycles
     __asm__("mov #3, r15");
     __asm__(".word 0x1389");
@@ -62,8 +62,8 @@ int main()
 {
     msp430_io_init();
 
-    sancus_enable_wrapped(&first, SM_GET_WRAP_NONCE(first), SM_GET_WRAP_TAG(first));
-    sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
+    sancus_enable(&first);
+    sancus_enable(&hello);
     pr_sm_info(&first);
     pr_sm_info(&hello);
 

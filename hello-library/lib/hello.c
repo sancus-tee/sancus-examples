@@ -16,7 +16,7 @@ void SM_ENTRY(hello) hello_greet(void)
 void untrusted_hello(void){
     puts("Hello from untrusted library");
 
-    sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
+    sancus_enable(&hello);
 
     puts("Sancus module enabled.");
 }

@@ -9,10 +9,10 @@ TARGET_NO_WRAP  = no_wrap_$(TARGET)
 all: $(TARGET)
 
 $(TARGET_NO_WRAP): $(OBJECTS)
-	$(LD) $(LDFLAGS) --prepare-for-sm-text-section-wrapping -o $@ $^
+	$(LD) $(LDFLAGS) -o $@ $^
 
 $(TARGET): $(TARGET_NO_WRAP)
-	$(SANCUS_CRYPTO) --wrap-sm-text-sections $(CRYPTOFLAGS) -o $@ $<
+	$(SANCUS_CRYPTO) --fill-macs $(CRYPTOFLAGS) -o $@ $<
 
 load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
