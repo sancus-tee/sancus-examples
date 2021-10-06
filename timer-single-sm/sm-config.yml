@@ -3,5 +3,3 @@ foo:
     # Map this SM all over the timer peripheral
     - peripheral_offset: 162
     - sm_isr: "$SANCUS/sm_isr.o"
-    # - peripheral_offset: 159
-    # - peripheral_offset: 112
