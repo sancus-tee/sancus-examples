@@ -45,8 +45,7 @@ void SM_ENTRY(hello) hello_violation(void)
     __asm__("mov #3, r15");
     __asm__(".word 0x1389");
 
-    // Wait just 3 cycles to try following a clix with another one
-    __asm__("nop");
+    // Wait just 2 cycles to try following a clix with another one
     __asm__("nop");
     __asm__("nop");
 
