@@ -18,7 +18,7 @@ load: $(TARGET)
 	$(SANCUS_LOAD) $(LOADFLAGS) $<
 
 sim: $(TARGET)
-	$(SANCUS_SIM) $(SIMFLAGS) --stop-after-sm-violation=1 $<
+	$(SANCUS_SIM) $(SIMFLAGS) --stop-after-sm-violation=-1 $<
 
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
