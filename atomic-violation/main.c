@@ -27,7 +27,7 @@ void SM_ENTRY(first) first_init(void)
 
 void SM_FUNC(first) handle_violation(void){
     // Print an info and shut down device.
-    pr_info("[Violation handler]: Violation occured. Shutting down!");
+    pr_info("[Violation handler]: Violation occurred. Shutting down!");
     // Exit will work even from Aion since first has SM ID 1 (which is privileged to modify CPUOFF)
     EXIT();
 }
@@ -95,4 +95,5 @@ int main()
     ASSERT(0);
 
 }
+// Register first to handle the Violation IRQ (IRQ 13)
 SM_HANDLE_IRQ(first, 13);
