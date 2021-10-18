@@ -20,7 +20,7 @@ void SM_FUNC(first) handle_violation(void){
     // Print an info and shut down device.
     pr_info("[Violation handler]: Violation occurred. Shutting down!");
     // Exit will work even from Aion since first has SM ID 1 (which is privileged to modify CPUOFF)
-    EXIT();
+    FINISH();
 }
 
 void SM_FUNC(first) __attribute__((naked)) __sm_first_isr_func(void) {
