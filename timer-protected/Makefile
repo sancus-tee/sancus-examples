@@ -22,7 +22,7 @@ load: $(TARGET)
 # redirect output to file and stdout (apt-get install expect)
 # https://stackoverflow.com/a/7219252
 sim: $(TARGET)
-	unbuffer $(SANCUS_SIM) $(SIMFLAGS) $< | tee sim.out
+	unbuffer $(SANCUS_SIM) $(SIMFLAGS) --stop-after-sm-violation=-1 $< | tee sim.out
 
 clean:
 	$(RM) $(TARGET) $(TARGET_NO_MAC) $(OBJECTS)
