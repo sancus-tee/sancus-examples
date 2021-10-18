@@ -30,6 +30,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
+      fail-fast: false
       matrix:
         example: ${{fromJson(needs.matrix-gen.outputs.matrix)}}
         core: [sancus, aion]

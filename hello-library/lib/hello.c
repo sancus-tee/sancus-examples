@@ -11,7 +11,7 @@ void SM_ENTRY(hello) hello_greet(void)
     puts("Greetings from hello Module");
 }
 
-void SM_ENTRY(hello) foo_exit(void)
+void SM_ENTRY(hello) hello_exit(void)
 {
     /* NOTE: only SM 1 can exit on Aion */
     FINISH();
