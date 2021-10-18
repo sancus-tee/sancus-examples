@@ -1,62 +1,63 @@
 [*]
-[*] GTKWave Analyzer v3.3.66 (w)1999-2015 BSI
-[*] Thu Nov  1 18:05:33 2018
+[*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
+[*] Mon Oct 18 15:22:42 2021
 [*]
-[dumpfile] "/home/jo/Documents/sancus/sancus-main/sancus-examples/sven/sancus_sim.fst"
-[dumpfile_mtime] "Thu Nov  1 18:04:57 2018"
-[dumpfile_size] 974305
-[savefile] "/home/jo/Documents/sancus/sancus-main/sancus-examples/waveform_view.gtkw"
-[timestart] 311987100
-[size] 1855 1056
-[pos] -1 -1
-*-16.000000 312225000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] tb_openMSP430.
-[treeopen] tb_openMSP430.dut.
-[treeopen] tb_openMSP430.dut.dbg_0.
-[treeopen] tb_openMSP430.dut.execution_unit_0.
-[treeopen] tb_openMSP430.dut.frontend_0.
-[sst_width] 229
-[signals_width] 158
+[dumpfile] "/home/jo/Documents/sancus-examples-fritz/sancus-step/sancus_sim.vcd"
+[dumpfile_mtime] "Mon Oct 18 14:53:02 2021"
+[dumpfile_size] 237682587
+[savefile] "/home/jo/Documents/sancus-examples-fritz/waveform_view.gtkw"
+[timestart] 3433396
+[size] 1853 1025
+[pos] -51 -51
+*-7.000000 3433825 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_openMSP430.
+[treeopen] TOP.tb_openMSP430.dut.
+[sst_width] 282
+[signals_width] 182
 [sst_expanded] 1
-[sst_vpaned_height] 632
+[sst_vpaned_height] 301
 @28
-tb_openMSP430.dut.mclk
+TOP.tb_openMSP430.msp_debug_0.mclk
+@22
+TOP.tb_openMSP430.msp_debug_0.inst_pc[15:0]
 @820
-tb_openMSP430.msp_debug_0.inst_full[255:0]
-tb_openMSP430.msp_debug_0.i_state[255:0]
-tb_openMSP430.msp_debug_0.e_state[255:0]
+TOP.tb_openMSP430.msp_debug_0.inst_full[255:0]
 @22
-tb_openMSP430.msp_debug_0.inst_pc[15:0]
+TOP.tb_openMSP430.dut.frontend_0.pc_nxt[15:0]
 @200
 -
 @28
-tb_openMSP430.dut.execution_unit_0.exec_sm
-@22
-tb_openMSP430.dut.frontend_0.irq[13:0]
+TOP.tb_openMSP430.dut.irq_detect
+@800022
+TOP.tb_openMSP430.dut.irq[13:0]
 @28
-tb_openMSP430.dut.frontend_0.sm_violation
-tb_openMSP430.dut.frontend_0.inst_irq_rst
-tb_openMSP430.dut.execution_unit_0.handling_irq
+(0)TOP.tb_openMSP430.dut.irq[13:0]
+(1)TOP.tb_openMSP430.dut.irq[13:0]
+(2)TOP.tb_openMSP430.dut.irq[13:0]
+(3)TOP.tb_openMSP430.dut.irq[13:0]
+(4)TOP.tb_openMSP430.dut.irq[13:0]
+(5)TOP.tb_openMSP430.dut.irq[13:0]
+(6)TOP.tb_openMSP430.dut.irq[13:0]
+(7)TOP.tb_openMSP430.dut.irq[13:0]
+(8)TOP.tb_openMSP430.dut.irq[13:0]
+(9)TOP.tb_openMSP430.dut.irq[13:0]
+(10)TOP.tb_openMSP430.dut.irq[13:0]
+(11)TOP.tb_openMSP430.dut.irq[13:0]
+(12)TOP.tb_openMSP430.dut.irq[13:0]
+(13)TOP.tb_openMSP430.dut.irq[13:0]
+@1001200
+-group_end
+@28
+TOP.tb_openMSP430.dut.frontend_0.sm_irq
+TOP.tb_openMSP430.dut.execution_unit_0.exec_sm
+@24
+TOP.tb_openMSP430.dut.execution_unit_0.sm_current_id[15:0]
 @200
 -
 @22
-tb_openMSP430.dut.execution_unit_0.mab[15:0]
-tb_openMSP430.dut.execution_unit_0.mdb_in[15:0]
-tb_openMSP430.dut.execution_unit_0.mdb_out[15:0]
-@28
-tb_openMSP430.dut.execution_unit_0.mb_wr[1:0]
-tb_openMSP430.dut.execution_unit_0.irq_mb_wr
-tb_openMSP430.dut.execution_unit_0.irq_sp_mb_wr
-@22
-tb_openMSP430.dut.execution_unit_0.register_file_0.r1[15:0]
-@200
--
-@28
-tb_openMSP430.dut.frontend_0.irq_detect
-@22
-tb_openMSP430.dut.frontend_0.e_state[4:0]
-tb_openMSP430.dut.frontend_0.e_state_nxt[4:0]
-@23
-tb_openMSP430.timerA_0.tar[15:0]
+TOP.tb_openMSP430.dut.mem_backbone_0.eu_dmem_addr[15:0]
+@29
+TOP.tb_openMSP430.dut.mem_backbone_0.eu_mb_wr[1:0]
 [pattern_trace] 1
 [pattern_trace] 0

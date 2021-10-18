@@ -77,6 +77,12 @@ void irqHandler(void)
     }
 }
 
+void SM_ENTRY(foo) foo_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 int main()
 {
     msp430_io_init();
@@ -99,7 +105,7 @@ int main()
         pr_info2("error: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     }
 
-    __ss_dbg_exit();
+    foo_exit();
     ASSERT(0 && "should never reach here");
 }
 
