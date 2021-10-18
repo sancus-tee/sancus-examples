@@ -28,8 +28,9 @@ void SM_ENTRY(first) first_init(void)
 void SM_FUNC(first) handle_violation(void){
     // Print an info and shut down device.
     pr_info("[Violation handler]: Violation occurred. Shutting down!");
-    // Exit will work even from Aion since first has SM ID 1 (which is privileged to modify CPUOFF)
-    EXIT();
+
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
 }
 
 void SM_FUNC(first) __attribute__((naked)) __sm_first_isr_func(void) {
@@ -90,10 +91,7 @@ int main()
     pr_info("Creating atomic violation...");
     hello_violation();
 
-    // should never reach here
-    pr_info("fail: should never reach here!");
-    ASSERT(0);
-
+    ASSERT(0 && "should never reach here");
 }
 // Register first to handle the Violation IRQ (IRQ 13)
 SM_HANDLE_IRQ(first, 13);

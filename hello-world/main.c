@@ -48,5 +48,5 @@ void exit_success(void)
     ASSERT(!sancus_get_id(hello_greet));
 
     pr_info("SM disabled; all done!\n\n");
-    EXIT();
+    FINISH();
 }

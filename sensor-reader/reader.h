@@ -16,5 +16,6 @@ typedef struct
 typedef unsigned nonce_t;
 
 void SM_ENTRY(reader) get_readings(nonce_t no, ReaderOutput* out);
+void SM_ENTRY(reader) reader_exit(void);
 
 #endif

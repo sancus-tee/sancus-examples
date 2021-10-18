@@ -11,6 +11,12 @@ void* SM_DATA(foo) __isr_sp = (void*) &__isr_stack[ISR_STACK_SIZE-1];
 
 DECLARE_SM(foo, 0x1234);
 
+void SM_ENTRY(foo) foo_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 void SM_ENTRY(foo) foo_enter()
 {
     pr_info("Hello from Foo");
@@ -89,9 +95,10 @@ int main()
     pr_info("Creating violation by directly accessing timer A...\n");
     int timer_violation = TAR;
     pr_info1("This should not be possible: %d", timer_violation);
+    // jo: @fritz what do you mean here? Use an ASSERT if possible?
 
-    pr_info("exiting...");
-    EXIT();
+    foo_exit();
+    ASSERT(0 && "should never reach here");
 }
 
 

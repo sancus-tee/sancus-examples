@@ -33,6 +33,12 @@ void SM_ENTRY(foo) test(char key) {
     );
 }
 
+void SM_ENTRY(foo) foo_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 /*
  * For the JMP 2f instruction, the program memory trace will be 11110000 00000000
  * For the NOP    instruction, the program memory trace will be 11100000 00000000
@@ -74,7 +80,9 @@ int main()
     ASSERT(dma_trace_idx == 2);
     ASSERT( (dma_trace[0] & TRACE_MASK));
     ASSERT(!(dma_trace[1] & TRACE_MASK));
-    EXIT();
+
+    foo_exit();
+    ASSERT(0 && "should never reach here");
 }
 
 /* ======== TIMER A ISR ======== */

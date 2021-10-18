@@ -82,5 +82,5 @@ void exit_success(void)
     ASSERT(!(*hello_const_pt));
 
     pr_info("SM disabled; all done!");
-    EXIT();
+    FINISH();
 }

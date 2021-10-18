@@ -15,7 +15,7 @@ int main()
     hello_greet();
     puts("All good.");
 
-    // Exit properly
-    exit(0);
+    hello_exit();
+    ASSERT(0 && "should never reach here");
 }
 

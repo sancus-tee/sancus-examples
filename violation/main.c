@@ -56,8 +56,7 @@ int main()
     printf("accessing foo private data at %p\n", &foo_data);
     foo_data++;
 
-    pr_info("fail: should never reach here!");
-    EXIT();
+    ASSERT(0 && "should never reach here");
 }
 // Register first to handle the Violation IRQ (IRQ 13)
 SM_HANDLE_IRQ(first, 13);

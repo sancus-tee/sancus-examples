@@ -17,6 +17,12 @@ void SM_ENTRY(foo) foo_enter()
     pr_info("Hello from Foo");
 }
 
+void SM_ENTRY(foo) foo_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 
 /*
  * Untrusted context
@@ -62,8 +68,8 @@ int main()
     while (c == '1');
     timer_disable();
 
-    pr_info("exiting...");
-    EXIT();
+    foo_exit();
+    ASSERT(0 && "should never reach here");
 }
 
 /* ======== TIMER A ISR ======== */

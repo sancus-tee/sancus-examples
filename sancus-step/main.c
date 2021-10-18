@@ -99,7 +99,8 @@ int main()
         pr_info2("error: invalid counter: %d - expected: %d\n", counter, MAX_COUNTER);
     }
 
-    EXIT();
+    __ss_dbg_exit();
+    ASSERT(0 && "should never reach here");
 }
 
 /* ======== TIMER A ISR ======== */
