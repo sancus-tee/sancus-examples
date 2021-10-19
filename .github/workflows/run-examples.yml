@@ -49,6 +49,10 @@ jobs:
             security: 128
           - core: aion
             example: confidential-loading
+          - core: aion
+            example: sancus-step
+          - core: aion
+            example: dma
           - core: sancus
             example: atomic-violation
 
