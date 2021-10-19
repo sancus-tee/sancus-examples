@@ -1,0 +1,5 @@
+# Use your SM names as parent elements in the YAML file.
+foo:
+    # Map this SM all over the timer peripheral
+    - peripheral_offset: 162
+    - sm_isr: "$SANCUS/sm_isr.o"

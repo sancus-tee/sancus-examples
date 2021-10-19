@@ -17,6 +17,12 @@ int SM_ENTRY(foo) foo_mul(int a, int b, int c)
     return (a * b) % c;
 }
 
+void SM_ENTRY(foo) foo_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 int main()
 {
     int rv, u, f;
@@ -37,6 +43,6 @@ int main()
     f = foo_mul(rv, 100, 35);
     ASSERT( u==f );
 
-    pr_info("all done!");
-    EXIT();
+    foo_exit();
+    ASSERT(0 && "should never reach here");
 }

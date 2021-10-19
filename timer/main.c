@@ -5,16 +5,21 @@
 volatile char c = '0';
 volatile int timer_latency;
 
-/*
- * Foo module
- */
+
+DECLARE_SM(bar, 0x1234);
+
+void SM_ENTRY(bar) bar_enter()
+{
+    while (c == '0');
+    pr_info("Hello from bar");
+}
 
 DECLARE_SM(foo, 0x1234);
 
-void SM_ENTRY(foo) foo_enter()
+void SM_ENTRY(foo) foo_exit(void)
 {
-    while (c == '0');
-    pr_info("Hello from Foo");
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
 }
 
 
@@ -41,6 +46,7 @@ int main()
     asm("eint\n\t");
     
     sancus_enable(&foo);
+    sancus_enable(&bar);
 
     /* First measure TSC function overhead */
     timer_tsc_start();
@@ -53,17 +59,17 @@ int main()
     tsc2 = timer_tsc_end();
     pr_info1("dummy operation took %d cycles\n", tsc2-tsc1);
     
-    pr_info("waiting for foo...");
+    pr_info("waiting for bar...");
     timer_irq(150);
-    foo_enter();
+    bar_enter();
     asm("eint\n\t");
     pr_info("waiting for unprotected code...");
     timer_irq(50);
     while (c == '1');
     timer_disable();
 
-    pr_info("exiting...");
-    EXIT();
+    foo_exit();
+    ASSERT(0 && "should never reach here");
 }
 
 /* ======== TIMER A ISR ======== */

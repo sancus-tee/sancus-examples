@@ -30,5 +30,5 @@ int main()
         WRITE_BYTE(trans);
     }
 
-    EXIT();
+    FINISH();
 }

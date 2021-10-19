@@ -33,5 +33,5 @@ int main()
         ASSERT( c == toupper(data[i]));
     }
 
-    EXIT();
+    FINISH();
 }

@@ -1,7 +1,7 @@
 #include "sensor.h"
 
 DECLARE_EXCLUSIVE_MMIO_SM(sensor, /*[secret_start, end[=*/ TSC_BASE, TSC_BASE + TSC_SIZE,
-                        /*caller_id=*/ 2, /*vendor_id=*/ 0x1234);
+                        /*caller_id=*/ 1, /*vendor_id=*/ 0x1234);
 
 sensor_data_t SM_MMIO_ENTRY(sensor) read_sensor_data(void)
 {
