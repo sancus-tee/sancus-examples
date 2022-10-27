@@ -11,7 +11,7 @@
  * In a real attack, one would have to manually analyze the assembly code and
  * use an absolute offset. */
 #define REL_INSTRUCTION_NUMBER_JMP 7
-#define TRACE_MASK 0x1000
+#define TRACE_MASK 0x8
 int instruction_counter = 0;
 uint16_t delay = 0;
 uint16_t dma_trace[2] = {0};
@@ -48,8 +48,8 @@ void SM_ENTRY(foo) foo_exit(void)
 }
 
 /*
- * For the JMP 2f instruction, the program memory trace will be 11110000 00000000
- * For the NOP    instruction, the program memory trace will be 11100000 00000000
+ * For the JMP 2f instruction, the program memory trace will be 00000000 00001111
+ * For the NOP    instruction, the program memory trace will be 00000000 00000111
  * The JMP is instruction is executed if the guess was incorrect, the NOP if it
  * was correct.
  *
