@@ -34,6 +34,8 @@ LDFLAGS             = -L$(SANCUS_SUPPORT_DIR)/lib/ $(MEMFLAGS) -lsm-io -ldev --i
 SIMFLAGS            = #$(MEMFLAGS)
 ifdef CI
     SIMFLAGS       += --crypto-noshow
+else
+    SIMFLAGS       += --dumpfile=sancus_sim.vcd
 endif
 CRYPTOFLAGS         = --key $(VENDOR_KEY) --verbose
 LOADFLAGS           = -device $(FPGA_DEV) -baudrate $(FPGA_RATE)

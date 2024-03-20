@@ -47,5 +47,6 @@ int main()
     ASSERT(cb_fired);
     ASSERT(retval == global_callback_func(args[0], args[1]));
 
-    EXIT();
+    sm_call_id(/*id=*/id, /*index=*/1, /*args=*/NULL, /*nargs=*/0, NULL);
+    ASSERT(0 && "should never reach here");
 }

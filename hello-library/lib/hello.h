@@ -9,5 +9,6 @@ void untrusted_hello(void);
 
 extern struct SancusModule hello;
 void SM_ENTRY(hello) hello_greet(void);
+void SM_ENTRY(hello) hello_exit(void);
 
 #endif

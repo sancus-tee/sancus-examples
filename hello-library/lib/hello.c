@@ -11,12 +11,18 @@ void SM_ENTRY(hello) hello_greet(void)
     puts("Greetings from hello Module");
 }
 
+void SM_ENTRY(hello) hello_exit(void)
+{
+    /* NOTE: only SM 1 can exit on Aion */
+    FINISH();
+}
+
 /* ======== UNTRUSTED CONTEXT ======== */
 
 void untrusted_hello(void){
     puts("Hello from untrusted library");
 
-    sancus_enable_wrapped(&hello, SM_GET_WRAP_NONCE(hello), SM_GET_WRAP_TAG(hello));
+    sancus_enable(&hello);
 
     puts("Sancus module enabled.");
 }
