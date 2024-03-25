@@ -4,7 +4,8 @@
 .global __sm_foo_secret_end
 .global enter_foo
 
-.text
+.section ".sm.foo.text", "wax"
+.align 2
 __sm_foo_public_start:
 enter_foo:
     nop
@@ -20,7 +21,7 @@ __sm_foo_public_end:
     ; untrusted and could be poisoned to point _inside_ the enclave..
     ret
 
-.data
+.section ".sm.foo.data"
 __sm_foo_secret_start:
     .word 0x0
 __sm_foo_secret_end:
