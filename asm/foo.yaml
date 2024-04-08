@@ -1,0 +1,4 @@
+foo:
+    - sm_entry: "foo_entry.o"
+    - sm_exit: "foo_exit.o"
+    - sm_isr: "foo_isr.o"
