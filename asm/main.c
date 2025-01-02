@@ -20,6 +20,5 @@ int main()
     int one = enter_foo(1);
     printf("foo(0)=%#x; foo(1)=%#x\n", null, one);
 
-    pr_info("all done!");
-    EXIT();
+    FINISH();
 }

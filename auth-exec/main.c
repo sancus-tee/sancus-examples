@@ -103,6 +103,5 @@ int main()
     puts("[untrusted] calling ping SM..");
     enter_ping();
 
-    puts("[untrusted] exiting..");
-    EXIT();
+    FINISH();
 }
