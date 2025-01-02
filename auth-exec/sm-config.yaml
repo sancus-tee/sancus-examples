@@ -1,0 +1,4 @@
+ping:
+    - num_connections: 1
+pong:
+    - num_connections: 1

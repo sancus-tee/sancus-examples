@@ -24,7 +24,7 @@ Building upon the above primitives, compiler support has been implemented for th
 | Secure interrupt handling | [timer-protected](timer-protected) | Secure, authenticated interrupt delivery to an intra-SM interrupt handler.  |
 | Dynamic loading           | [dynamic-loader](dynamic-loader) | SM binary image is dynamically linked and loaded by untrusted support software at runtime.  |
 | Intra-SM multiplication   | [arithmetic](arithmetic)       | Dummy SMs performing secure (inlined) arithmetic operations.    |
-| Reactive programming      | todo issue #20                 | Minimalist (non-contiki) program with `SM_INPUT/OUTPUT`?        |
+| Reactive programming      | [auth-exec](auth-exec)  | Minimalist (non-contiki) program with `SM_INPUT/OUTPUT`        |
 
 
 ## Running the examples
